@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa del prototipo | Votaciones del Festival 2027 (prototipo)</title>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+<body>
+<a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#contenido">Saltar al contenido</a>
+<div class="aviso-academico">Prototipo académico con datos de ejemplo. No es un sitio oficial del Festival. <a href="https://festivalvallenato.com/" target="_blank" rel="noopener">Ir a festivalvallenato.com</a></div>
+<header class="encabezado">
+  <nav class="navbar navbar-expand-lg" aria-label="Principal">
+    <div class="container">
+      <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027</span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="categorias.html">Categorías</a></li>
+          <li class="nav-item"><a class="nav-link" href="votaciones.html">Votaciones</a></li>
+          <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a class="btn btn-claro btn-sm w-100" href="login.html">Ingresar</a></li><li class="nav-item ms-lg-2 mt-2 mb-2 my-lg-0"><a class="btn btn-primary btn-sm w-100" href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="fuelle" aria-hidden="true"></div>
+</header>
+<main id="contenido">
+<section class="seccion">
+  <div class="container">
+    <h1>Mapa del prototipo</h1>
+    <p class="lead mt-2">Las 14 pantallas de la Entrega 1 y el caso de uso con el que se relaciona cada una.</p>
+    <div class="table-responsive mt-4">
+      <table class="table tabla-admin">
+        <thead><tr><th scope="col">Pantalla</th><th scope="col">Nombre</th><th scope="col">Caso de uso</th><th scope="col">Área</th></tr></thead>
+        <tbody>
+<tr><td><strong>UI-01</strong></td><td><a href="index.html">Inicio</a></td><td>CU-03</td><td>Pública</td></tr>
+<tr><td><strong>UI-02</strong></td><td><a href="registro.html">Registro</a></td><td>CU-01</td><td>Pública</td></tr>
+<tr><td><strong>UI-03</strong></td><td><a href="login.html">Inicio de sesión</a></td><td>CU-02</td><td>Pública</td></tr>
+<tr><td><strong>UI-04</strong></td><td><a href="categorias.html">Categorías</a></td><td>CU-03</td><td>Pública</td></tr>
+<tr><td><strong>UI-05</strong></td><td><a href="votaciones.html">Votaciones disponibles</a></td><td>CU-03</td><td>Pública</td></tr>
+<tr><td><strong>UI-06</strong></td><td><a href="votacion.html">Detalle de la votación</a></td><td>CU-03 y CU-04</td><td>Pública</td></tr>
+<tr><td><strong>UI-07</strong></td><td><a href="opciones.html">Opciones disponibles</a></td><td>CU-04</td><td>Pública</td></tr>
+<tr><td><strong>UI-08</strong></td><td><a href="confirmar.html">Confirmación del voto</a></td><td>CU-04</td><td>Pública</td></tr>
+<tr><td><strong>UI-09</strong></td><td><a href="voto-registrado.html">Voto registrado</a></td><td>CU-04</td><td>Pública</td></tr>
+<tr><td><strong>UI-10</strong></td><td><a href="admin/index.html">Panel principal</a></td><td>CU-05 y CU-09</td><td>Administración</td></tr>
+<tr><td><strong>UI-11</strong></td><td><a href="admin/categorias.html">Gestión de categorías</a></td><td>CU-05</td><td>Administración</td></tr>
+<tr><td><strong>UI-12</strong></td><td><a href="admin/votaciones.html">Gestión de votaciones</a></td><td>CU-06</td><td>Administración</td></tr>
+<tr><td><strong>UI-13</strong></td><td><a href="admin/opciones.html">Gestión de opciones</a></td><td>CU-07</td><td>Administración</td></tr>
+<tr><td><strong>UI-14</strong></td><td><a href="admin/resultados.html">Consulta de resultados</a></td><td>CU-08</td><td>Administración</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="texto-suave">Los casos de uso siguen la Base común del equipo y se ajustarán cuando estén las fichas definitivas.</p>
+  </div>
+</section>
+</main>
+<footer class="pie">
+  <div class="container">
+    <div class="pie-principal">
+      <div>
+        <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027 · Valledupar</span></span></a>
+        <p class="mt-3 mb-0">Las votaciones del público del Festival, desde cualquier celular.</p>
+      </div>
+      <nav class="pie-enlaces" aria-label="Enlaces del pie">
+        <a href="index.html">Inicio</a>
+        <a href="categorias.html">Categorías</a>
+        <a href="votaciones.html">Votaciones</a>
+        <a href="login.html">Ingresar</a>
+        <a href="registro.html">Crear cuenta</a>
+      </nav>
+    </div>
+    <div class="pie-ficha"><span>Prototipo académico · Entrega 1, Desarrollo Web</span><span>Guía de pantallas del prototipo</span></div>
+  </div>
+</footer>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/prototipo.js"></script>
+</body>
+</html>

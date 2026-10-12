@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro | Votaciones del Festival 2027 (prototipo)</title>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+<body>
+<a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#contenido">Saltar al contenido</a>
+<div class="aviso-academico">Prototipo académico con datos de ejemplo. No es un sitio oficial del Festival. <a href="https://festivalvallenato.com/" target="_blank" rel="noopener">Ir a festivalvallenato.com</a></div>
+<header class="encabezado">
+  <nav class="navbar navbar-expand-lg" aria-label="Principal">
+    <div class="container">
+      <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027</span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="categorias.html">Categorías</a></li>
+          <li class="nav-item"><a class="nav-link" href="votaciones.html">Votaciones</a></li>
+          <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a class="btn btn-claro btn-sm w-100" href="login.html">Ingresar</a></li><li class="nav-item ms-lg-2 mt-2 mb-2 my-lg-0"><a class="btn btn-primary btn-sm w-100" href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="fuelle" aria-hidden="true"></div>
+</header>
+<main id="contenido">
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center"><div class="col-md-8 col-lg-6">
+      <h1>Crea tu cuenta</h1>
+      <p class="lead mt-2">La necesitas para votar. Puedes ver las votaciones sin cuenta.</p>
+      <div class="nota-pendiente my-4"><strong>Pendiente de validación:</strong> los datos exactos que se pedirán para registrarse los definirá la Fundación.</div>
+      <form data-demo data-destino="login.html" autocomplete="off" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="nombre">Nombre completo</label>
+          <input class="form-control" id="nombre" autocomplete="off" placeholder="Ej.: Ana Pérez" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="correo">Correo electrónico</label>
+          <input class="form-control" id="correo" type="email" autocomplete="off" placeholder="nombre@correo.com" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label d-flex flex-wrap gap-2 align-items-center" for="documento">Número de documento <span class="etiqueta etiqueta-pendiente">Pendiente de validación</span></label>
+          <input class="form-control" id="documento" inputmode="numeric" autocomplete="off" placeholder="Solo números">
+          <div class="form-text">Ayudaría a evitar votos duplicados, si la Fundación lo aprueba.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="clave">Contraseña</label>
+          <input class="form-control" id="clave" type="password" autocomplete="new-password" required>
+          <div class="form-text">Mínimo 8 caracteres.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="clave2">Repite la contraseña</label>
+          <input class="form-control" id="clave2" type="password" autocomplete="new-password" required>
+        </div>
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" id="datos" required>
+          <label class="form-check-label" for="datos">Autorizo el tratamiento de mis datos personales según la política de la Fundación (Ley 1581 de 2012).</label>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Crear cuenta</button>
+      </form>
+      <p class="mt-4">¿Ya tienes cuenta? <a class="fw-bold" href="login.html">Ingresar</a></p>
+    </div></div>
+  </div>
+</section>
+</main>
+<footer class="pie">
+  <div class="container">
+    <div class="pie-principal">
+      <div>
+        <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027 · Valledupar</span></span></a>
+        <p class="mt-3 mb-0">Las votaciones del público del Festival, desde cualquier celular.</p>
+      </div>
+      <nav class="pie-enlaces" aria-label="Enlaces del pie">
+        <a href="index.html">Inicio</a>
+        <a href="categorias.html">Categorías</a>
+        <a href="votaciones.html">Votaciones</a>
+        <a href="login.html">Ingresar</a>
+        <a href="registro.html">Crear cuenta</a>
+      </nav>
+    </div>
+    <div class="pie-ficha"><span>Prototipo académico · Entrega 1, Desarrollo Web</span><span>Pantalla <strong>UI-02</strong> · Registro · Caso de uso CU-01 · <a href="mapa.html">Mapa del prototipo</a></span></div>
+  </div>
+</footer>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/prototipo.js"></script>
+</body>
+</html>

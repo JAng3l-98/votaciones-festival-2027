@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Votaciones disponibles | Votaciones del Festival 2027 (prototipo)</title>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+<body>
+<a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#contenido">Saltar al contenido</a>
+<div class="aviso-academico">Prototipo académico con datos de ejemplo. No es un sitio oficial del Festival. <a href="https://festivalvallenato.com/" target="_blank" rel="noopener">Ir a festivalvallenato.com</a></div>
+<header class="encabezado">
+  <nav class="navbar navbar-expand-lg" aria-label="Principal">
+    <div class="container">
+      <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027</span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="categorias.html">Categorías</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="votaciones.html">Votaciones</a></li>
+          <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a class="btn btn-claro btn-sm w-100" href="login.html">Ingresar</a></li><li class="nav-item ms-lg-2 mt-2 mb-2 my-lg-0"><a class="btn btn-primary btn-sm w-100" href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="fuelle" aria-hidden="true"></div>
+</header>
+<main id="contenido">
+<section class="seccion">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-2">
+      <h1 class="m-0">Votaciones</h1>
+    </div>
+    <nav class="filtros mt-4 mb-4" aria-label="Filtrar por categoría">
+      <a class="filtro activo" href="votaciones.html" aria-current="true">Todas</a>
+      <a class="filtro" href="votaciones.html">Música</a>
+      <a class="filtro" href="votaciones.html">Desfile y comparsas</a>
+      <a class="filtro" href="votaciones.html">Piloneras</a>
+      <a class="filtro" href="votaciones.html">Reconocimientos del público</a>
+    </nav>
+    <h2 class="h3 mb-3">Abiertas</h2>
+    <div class="row g-3 mb-5">
+      <div class="col-md-6 col-lg-4">
+        <a class="ficha ficha-votacion ficha-abierta" href="votacion.html">
+          <div class="ficha-imagen"><svg class="escena" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="cielo-cancion" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CC433C"/><stop offset="1" stop-color="#600F08"/></linearGradient></defs><rect width="320" height="160" fill="url(#cielo-cancion)"/><circle cx="262" cy="40" r="20" fill="#E1A861" opacity=".9"/><path d="M0 120L22 98l18-28 18 22 20-8 26 24 56 8 54-10 18-18 18-24 20 26 22-10 28 20v60H0z" fill="#000" opacity=".26"/><g fill="#F8E7CF" opacity=".9"><path d="M40 70l-6 9 4-1.5 3 2.5 3-3 2.5 1z"/><path d="M250 64l-7 9 4-1.5 3 3.5 3-4 3 1z"/></g><rect y="132" width="320" height="28" fill="#000" opacity=".3"/><g transform="translate(98 36) scale(1.55)" style="color:#F8E7CF" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g fill="#600F08" stroke="none"><path d="M4 14h14v2h28v-2h14v36H46v-2H18v2H4z"/></g><rect x="4" y="14" width="14" height="36" rx="3"/><path d="M8 21h6M8 27h6M8 33h6M8 39h6M8 45h6"/><rect x="46" y="14" width="14" height="36" rx="3"/><path d="M18 16l4 3 4-3 4 3 4-3 4 3 4-3 4 3M18 48l4-3 4 3 4-3 4 3 4-3 4 3 4-3"/><path d="M22 19v26M26 16v32M30 19v26M34 16v32M38 19v26M42 16v32"/><g fill="currentColor" stroke="none"><circle cx="50" cy="21" r="1.8"/><circle cx="56" cy="21" r="1.8"/><circle cx="50" cy="28" r="1.8"/><circle cx="56" cy="28" r="1.8"/><circle cx="50" cy="35" r="1.8"/><circle cx="56" cy="35" r="1.8"/><circle cx="50" cy="42" r="1.8"/><circle cx="56" cy="42" r="1.8"/></g></g><g transform="translate(204 46) scale(0.95)" style="color:#E1A861" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 46V15l24-5v32"/><path d="M22 15l24-5v6l-24 5z" fill="currentColor"/><ellipse cx="16.5" cy="46.5" rx="6" ry="4.6" fill="currentColor" transform="rotate(-18 16.5 46.5)"/><ellipse cx="40.5" cy="42.5" rx="6" ry="4.6" fill="currentColor" transform="rotate(-18 40.5 42.5)"/></g><g transform="translate(48 40) scale(0.8)" style="color:#E5D39C" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M30 44V12q10 2 14 10"/><ellipse cx="24.5" cy="44.5" rx="6" ry="4.6" fill="currentColor" transform="rotate(-18 24.5 44.5)"/></g></svg></div>
+          <div class="d-flex justify-content-between gap-2"><span class="meta">Música</span><span class="etiqueta etiqueta-abierta">Abierta</span></div>
+          <h3>Canción favorita del público</h3>
+          <div class="meta">Cierra el 30 de abril de 2027</div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a class="ficha ficha-votacion ficha-abierta" href="votacion.html">
+          <div class="ficha-imagen"><svg class="escena" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="cielo-agrupacion" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E2219"/><stop offset="1" stop-color="#2A0704"/></linearGradient></defs><rect width="320" height="160" fill="url(#cielo-agrupacion)"/><circle cx="262" cy="40" r="20" fill="#E1A861" opacity=".9"/><path d="M0 120L22 98l18-28 18 22 20-8 26 24 56 8 54-10 18-18 18-24 20 26 22-10 28 20v60H0z" fill="#000" opacity=".26"/><g fill="#F8E7CF" opacity=".9"><path d="M40 70l-6 9 4-1.5 3 2.5 3-3 2.5 1z"/><path d="M250 64l-7 9 4-1.5 3 3.5 3-4 3 1z"/></g><rect y="132" width="320" height="28" fill="#000" opacity=".3"/><g transform="translate(50 42) scale(1.3)" style="color:#F8E7CF" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g fill="#3A0B06" stroke="none"><path d="M4 14h14v2h28v-2h14v36H46v-2H18v2H4z"/></g><rect x="4" y="14" width="14" height="36" rx="3"/><path d="M8 21h6M8 27h6M8 33h6M8 39h6M8 45h6"/><rect x="46" y="14" width="14" height="36" rx="3"/><path d="M18 16l4 3 4-3 4 3 4-3 4 3 4-3 4 3M18 48l4-3 4 3 4-3 4 3 4-3 4 3 4-3"/><path d="M22 19v26M26 16v32M30 19v26M34 16v32M38 19v26M42 16v32"/><g fill="currentColor" stroke="none"><circle cx="50" cy="21" r="1.8"/><circle cx="56" cy="21" r="1.8"/><circle cx="50" cy="28" r="1.8"/><circle cx="56" cy="28" r="1.8"/><circle cx="50" cy="35" r="1.8"/><circle cx="56" cy="35" r="1.8"/><circle cx="50" cy="42" r="1.8"/><circle cx="56" cy="42" r="1.8"/></g></g><g transform="translate(136 50) scale(1.15)" style="color:#E1A861" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g fill="#3A0B06" stroke="none"><path d="M12 16a20 6 0 0 1 40 0l-3 32q-17 8-34 0z"/></g><ellipse cx="32" cy="16" rx="20" ry="6"/><path d="M12 16l3 32M52 16l-3 32M15 48q17 8 34 0"/><path d="M14 23l6 22 6-21 6 23 6-23 6 21 6-22"/></g><g transform="translate(206 56) scale(1.05)" style="color:#E5D39C" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g fill="#3A0B06" stroke="none"><rect x="5" y="14" width="46" height="13" rx="6.5"/></g><rect x="5" y="14" width="46" height="13" rx="6.5"/><path d="M12 16v9M16 16v9M20 16v9M24 16v9M28 16v9M32 16v9M36 16v9M40 16v9M44 16v9"/><path d="M8 46h30M38 41v10M38 41h18M38 46h18M38 51h18"/></g></svg></div>
+          <div class="d-flex justify-content-between gap-2"><span class="meta">Música</span><span class="etiqueta etiqueta-abierta">Abierta</span></div>
+          <h3>Agrupación favorita del público</h3>
+          <div class="meta">Cierra el 30 de abril de 2027</div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <a class="ficha ficha-votacion ficha-abierta" href="votacion.html">
+          <div class="ficha-imagen"><svg class="escena" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="cielo-comparsa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EA3930"/><stop offset="1" stop-color="#8E2219"/></linearGradient></defs><rect width="320" height="160" fill="url(#cielo-comparsa)"/><path d="M0 18Q160 52 320 18" fill="none" stroke="#F8E7CF" stroke-width="1.2" opacity=".55"/><circle cx="32" cy="27.1" r="3.2" fill="#E1A861"/><circle cx="64" cy="31.9" r="3.2" fill="#F8E7CF"/><circle cx="96" cy="35.3" r="3.2" fill="#EA3930"/><circle cx="128" cy="37.3" r="3.2" fill="#E5D39C"/><circle cx="160" cy="38" r="3.2" fill="#E1A861"/><circle cx="192" cy="37.3" r="3.2" fill="#F8E7CF"/><circle cx="224" cy="35.3" r="3.2" fill="#EA3930"/><circle cx="256" cy="31.9" r="3.2" fill="#E5D39C"/><circle cx="288" cy="27.1" r="3.2" fill="#E1A861"/><path d="M0 120L22 98l18-28 18 22 20-8 26 24 56 8 54-10 18-18 18-24 20 26 22-10 28 20v60H0z" fill="#000" opacity=".26"/><g fill="#F8E7CF" opacity=".9"><path d="M40 70l-6 9 4-1.5 3 2.5 3-3 2.5 1z"/><path d="M250 64l-7 9 4-1.5 3 3.5 3-4 3 1z"/></g><rect y="132" width="320" height="28" fill="#000" opacity=".3"/><rect x="40" y="52" width="5" height="9" rx="1" fill="#F8E7CF" transform="rotate(20 40 52)"/><rect x="66" y="88" width="5" height="9" rx="1" fill="#E1A861" transform="rotate(-30 66 88)"/><rect x="92" y="60" width="5" height="9" rx="1" fill="#E5D39C" transform="rotate(45 92 60)"/><rect x="230" y="58" width="5" height="9" rx="1" fill="#F8E7CF" transform="rotate(-15 230 58)"/><rect x="252" y="92" width="5" height="9" rx="1" fill="#E1A861" transform="rotate(35 252 92)"/><rect x="276" y="66" width="5" height="9" rx="1" fill="#E5D39C" transform="rotate(-40 276 66)"/><rect x="210" y="104" width="5" height="9" rx="1" fill="#F8E7CF" transform="rotate(10 210 104)"/><rect x="54" y="114" width="5" height="9" rx="1" fill="#E5D39C" transform="rotate(60 54 114)"/><rect x="118" y="44" width="5" height="9" rx="1" fill="#E1A861" transform="rotate(-25 118 44)"/><rect x="200" y="40" width="5" height="9" rx="1" fill="#F8E7CF" transform="rotate(30 200 40)"/><path d="M18 70q18-16 36 0t36 0M232 82q16-14 32 0t32 0" fill="none" stroke="#E1A861" stroke-width="3" stroke-linecap="round"/><path d="M20 100q14 10 28 0t28 0M240 118q12-10 24 0t24 0" fill="none" stroke="#F8E7CF" stroke-width="2.5" stroke-linecap="round"/><g transform="translate(120 40) scale(1.4)" style="color:#F8E7CF" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g fill="#8E2219" stroke="none"><path d="M12 16a20 6 0 0 1 40 0l-3 32q-17 8-34 0z"/></g><ellipse cx="32" cy="16" rx="20" ry="6"/><path d="M12 16l3 32M52 16l-3 32M15 48q17 8 34 0"/><path d="M14 23l6 22 6-21 6 23 6-23 6 21 6-22"/></g></svg></div>
+          <div class="d-flex justify-content-between gap-2"><span class="meta">Desfile y comparsas</span><span class="etiqueta etiqueta-abierta">Abierta</span></div>
+          <h3>Comparsa más alegre del desfile</h3>
+          <div class="meta">Cierra el 28 de abril de 2027</div>
+        </a>
+      </div>
+    </div>
+    <h2 class="h3 mb-3">Próximamente</h2>
+    <div class="row g-3 mb-5">
+      <div class="col-md-6 col-lg-4">
+        <a class="ficha ficha-votacion ficha-pronto" href="votacion.html">
+          <div class="ficha-imagen"><svg class="escena" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="cielo-piloneras" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9853A"/><stop offset="1" stop-color="#600F08"/></linearGradient></defs><rect width="320" height="160" fill="url(#cielo-piloneras)"/><circle cx="262" cy="40" r="20" fill="#E1A861" opacity=".9"/><path d="M0 120L22 98l18-28 18 22 20-8 26 24 56 8 54-10 18-18 18-24 20 26 22-10 28 20v60H0z" fill="#000" opacity=".26"/><g fill="#F8E7CF" opacity=".9"><path d="M40 70l-6 9 4-1.5 3 2.5 3-3 2.5 1z"/><path d="M250 64l-7 9 4-1.5 3 3.5 3-4 3 1z"/></g><rect y="132" width="320" height="28" fill="#000" opacity=".3"/><g transform="translate(78 30) scale(1.6)" style="color:#600F08" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M26 8h12l5 13H21z" fill="#F8E7CF"/><path d="M21 21h22l7 15H14z" fill="#E1A861"/><path d="M14 36h36l9 17q-3 3.5-6 0t-6 0-6 0-6 0-6 0-6 0-6 0-6 0-6 0z" fill="#EA3930"/><path d="M24 14h16M19 28h26M12 44h40" stroke-dasharray="1 5"/></g><g transform="translate(184 52) scale(1.25)" style="color:#F8E7CF" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g fill="#600F08" stroke="none"><path d="M12 26h40l-5 20H17zM19 46l-2 6h30l-2-6z"/></g><path d="M12 26h40l-5 20H17z"/><path d="M19 46l-2 6h30l-2-6"/><path d="M28 28l14-22" stroke-width="5"/></g><g fill="#EA3930" stroke="none"><circle cx="52.0" cy="57.2" r="4"/><circle cx="58.5" cy="61.9" r="4"/><circle cx="56.0" cy="69.5" r="4"/><circle cx="48.0" cy="69.5" r="4"/><circle cx="45.5" cy="61.9" r="4"/></g><circle cx="52" cy="64" r="3.2" fill="#F8E7CF" stroke="none"/><g fill="#F8E7CF" stroke="none"><circle cx="274.0" cy="94.0" r="3.5"/><circle cx="279.7" cy="98.2" r="3.5"/><circle cx="277.5" cy="104.8" r="3.5"/><circle cx="270.5" cy="104.8" r="3.5"/><circle cx="268.3" cy="98.2" r="3.5"/></g><circle cx="274" cy="100" r="2.8" fill="#E1A861" stroke="none"/><g fill="#E5D39C" stroke="none"><circle cx="224.0" cy="22.9" r="3"/><circle cx="228.9" cy="26.4" r="3"/><circle cx="227.0" cy="32.1" r="3"/><circle cx="221.0" cy="32.1" r="3"/><circle cx="219.1" cy="26.4" r="3"/></g><circle cx="224" cy="28" r="2.4" fill="#EA3930" stroke="none"/></svg></div>
+          <div class="d-flex justify-content-between gap-2"><span class="meta">Piloneras</span><span class="etiqueta etiqueta-pronto">Próximamente</span></div>
+          <h3>Mejor vestuario de Piloneras</h3>
+          <div class="meta">Abre el 26 de abril de 2027</div>
+        </a>
+      </div>
+    </div>
+    <h2 class="h3 mb-3">Cerradas</h2>
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-4">
+        <a class="ficha ficha-votacion ficha-cerrada" href="votacion.html">
+          <div class="ficha-imagen"><svg class="escena" viewBox="0 0 320 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="cielo-presentacion" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A1410"/><stop offset="1" stop-color="#000000"/></linearGradient></defs><rect width="320" height="160" fill="url(#cielo-presentacion)"/><path d="M70 0l40 132h44zM250 0l-84 132h44z" fill="#F8E7CF" opacity=".13"/><path d="M0 18Q160 52 320 18" fill="none" stroke="#F8E7CF" stroke-width="1.2" opacity=".55"/><circle cx="32" cy="27.1" r="3.2" fill="#E1A861"/><circle cx="64" cy="31.9" r="3.2" fill="#F8E7CF"/><circle cx="96" cy="35.3" r="3.2" fill="#EA3930"/><circle cx="128" cy="37.3" r="3.2" fill="#E5D39C"/><circle cx="160" cy="38" r="3.2" fill="#E1A861"/><circle cx="192" cy="37.3" r="3.2" fill="#F8E7CF"/><circle cx="224" cy="35.3" r="3.2" fill="#EA3930"/><circle cx="256" cy="31.9" r="3.2" fill="#E5D39C"/><circle cx="288" cy="27.1" r="3.2" fill="#E1A861"/><rect y="132" width="320" height="28" fill="#000" opacity=".3"/><path d="M70 118h180v14H70z" fill="#000" stroke="#E1A861" stroke-width="1.5"/><path d="M80 125h160" stroke="#E1A861" stroke-width="1" stroke-dasharray="6 6"/><g transform="translate(124 50) scale(1.05)" style="color:#F8E7CF" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g fill="#1A0603" stroke="none"><rect x="25" y="5" width="14" height="22" rx="7"/></g><rect x="25" y="5" width="14" height="22" rx="7"/><path d="M25 12h14M25 18h14"/><path d="M19 19v4a13 13 0 0 0 26 0v-4"/><path d="M32 36v18M22 58h20"/></g><g transform="translate(44 54) scale(0.55)" style="color:#E1A861" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8l7 15 16 2-12 11 3 16-14-8-14 8 3-16L9 25l16-2z"/></g><g transform="translate(236 46) scale(0.45)" style="color:#E5D39C" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8l7 15 16 2-12 11 3 16-14-8-14 8 3-16L9 25l16-2z"/></g><g transform="translate(262 86) scale(0.3)" style="color:#F8E7CF" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8l7 15 16 2-12 11 3 16-14-8-14 8 3-16L9 25l16-2z"/></g></svg></div>
+          <div class="d-flex justify-content-between gap-2"><span class="meta">Reconocimientos del público</span><span class="etiqueta etiqueta-cerrada">Cerrada</span></div>
+          <h3>Presentación más recordada</h3>
+          <div class="meta">Cerró el 20 de abril de 2027</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="pie">
+  <div class="container">
+    <div class="pie-principal">
+      <div>
+        <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027 · Valledupar</span></span></a>
+        <p class="mt-3 mb-0">Las votaciones del público del Festival, desde cualquier celular.</p>
+      </div>
+      <nav class="pie-enlaces" aria-label="Enlaces del pie">
+        <a href="index.html">Inicio</a>
+        <a href="categorias.html">Categorías</a>
+        <a href="votaciones.html">Votaciones</a>
+        <a href="login.html">Ingresar</a>
+        <a href="registro.html">Crear cuenta</a>
+      </nav>
+    </div>
+    <div class="pie-ficha"><span>Prototipo académico · Entrega 1, Desarrollo Web</span><span>Pantalla <strong>UI-05</strong> · Votaciones disponibles · Caso de uso CU-03 · <a href="mapa.html">Mapa del prototipo</a></span></div>
+  </div>
+</footer>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/prototipo.js"></script>
+</body>
+</html>

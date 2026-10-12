@@ -1,0 +1,10 @@
+{
+  // VS Code ofrece instalar estas extensiones al abrir el proyecto
+  "recommendations": [
+    "ritwickdey.liveserver",
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-rename-tag",
+    "ecmel.vscode-html-css",
+    "ms-ceintl.vscode-language-pack-es"
+  ]
+}

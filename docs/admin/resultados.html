@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consulta de resultados | Votaciones del Festival 2027 (prototipo)</title>
+<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body class="admin-body">
+<a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#contenido">Saltar al contenido</a>
+<div class="aviso-academico">Prototipo académico con datos de ejemplo. No es un sitio oficial del Festival. <a href="https://festivalvallenato.com/" target="_blank" rel="noopener">Ir a festivalvallenato.com</a></div>
+<header class="admin-encabezado">
+  <div class="container-fluid px-3 px-lg-4 py-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+    <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Administración</strong><span>Votaciones del Festival</span></span></a>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <label class="visually-hidden" for="edicion">Edición</label>
+      <select id="edicion" class="form-select form-select-sm selector-edicion w-auto">
+        <option>Festival 2027</option>
+        <option>Festival 2028 (borrador)</option>
+      </select>
+      <a class="btn btn-sm btn-claro" href="../index.html">Ver sitio público</a>
+    </div>
+  </div>
+</header>
+<div class="admin-layout">
+  <nav class="admin-menu" aria-label="Administración">
+    <a href="index.html">Panel</a>
+    <a href="categorias.html">Categorías</a>
+    <a href="votaciones.html">Votaciones</a>
+    <a href="opciones.html">Opciones</a>
+    <a href="resultados.html" class="activo" aria-current="page">Resultados</a>
+    <a href="../login.html">Salir</a>
+  </nav>
+  <main id="contenido" class="px-3 px-lg-4 pb-4">
+<div class="admin-titulo">
+  <div><h1>Resultados</h1><p class="texto-suave m-0">Conteo de votos por votación</p></div>
+  <div class="d-flex flex-wrap gap-2">
+    <button class="btn btn-outline-dark" type="button">Descargar CSV</button>
+    <button class="btn btn-outline-dark" type="button">Cerrar votación</button>
+  </div>
+</div>
+<div class="panel mb-3">
+  <label class="form-label" for="r-votacion">Votación</label>
+  <select class="form-select" id="r-votacion" style="max-width: 32rem">
+    <option>Canción favorita del público</option><option>Agrupación favorita del público</option><option>Comparsa más alegre del desfile</option><option>Presentación más recordada</option>
+  </select>
+</div>
+<div class="row g-3">
+  <div class="col-xl-8">
+    <div class="panel">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h2 class="m-0">Canción favorita del público</h2>
+      </div>
+      <p class="texto-suave">642 votos. Abierta hasta el 30 de abril de 2027.</p>
+      <div class="resultado lider">
+        <div class="cabeza"><span>Canción B</span><span>38% <span class="texto-suave fw-normal">(244 votos)</span></span></div>
+        <div class="pista" role="img" aria-label="Canción B: 38 por ciento"><div class="barra" style="width: 38%"></div></div>
+      </div>
+      <div class="resultado">
+        <div class="cabeza"><span>Canción A</span><span>27% <span class="texto-suave fw-normal">(173 votos)</span></span></div>
+        <div class="pista" role="img" aria-label="Canción A: 27 por ciento"><div class="barra" style="width: 27%"></div></div>
+      </div>
+      <div class="resultado">
+        <div class="cabeza"><span>Canción D</span><span>21% <span class="texto-suave fw-normal">(135 votos)</span></span></div>
+        <div class="pista" role="img" aria-label="Canción D: 21 por ciento"><div class="barra" style="width: 21%"></div></div>
+      </div>
+      <div class="resultado">
+        <div class="cabeza"><span>Canción C</span><span>14% <span class="texto-suave fw-normal">(90 votos)</span></span></div>
+        <div class="pista" role="img" aria-label="Canción C: 14 por ciento"><div class="barra" style="width: 14%"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="panel">
+      <h2>Publicación</h2>
+      <p>Los resultados solo los ve el administrador hasta que se publiquen.</p>
+      <div class="nota-pendiente"><strong>Pendiente de validación:</strong> si se publican en vivo, al cierre o no se publican, y si un jurado debe revisarlos antes.</div>
+    </div>
+  </div>
+</div>
+</main>
+</div>
+<footer class="pie pie-admin">
+  <div class="container">
+    <div class="pie-ficha"><span>Prototipo académico · Entrega 1, Desarrollo Web</span><span>Pantalla <strong>UI-14</strong> · Consulta de resultados · Caso de uso CU-08 · <a href="../mapa.html">Mapa del prototipo</a></span></div>
+  </div>
+</footer>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/prototipo.js"></script>
+</body>
+</html>

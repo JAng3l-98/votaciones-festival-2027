@@ -1,0 +1,17 @@
+{
+  // Live Server sirve la carpeta docs/, que es la misma que publica GitHub Pages
+  "liveServer.settings.root": "/docs",
+  "liveServer.settings.port": 5500,
+
+  // Formato automático al guardar, igual para todo el equipo
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  // Oculta archivos del sistema en el explorador
+  "files.exclude": { "**/.DS_Store": true }
+}

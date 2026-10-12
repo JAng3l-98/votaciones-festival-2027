@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel principal | Votaciones del Festival 2027 (prototipo)</title>
+<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body class="admin-body">
+<a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#contenido">Saltar al contenido</a>
+<div class="aviso-academico">Prototipo académico con datos de ejemplo. No es un sitio oficial del Festival. <a href="https://festivalvallenato.com/" target="_blank" rel="noopener">Ir a festivalvallenato.com</a></div>
+<header class="admin-encabezado">
+  <div class="container-fluid px-3 px-lg-4 py-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+    <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Administración</strong><span>Votaciones del Festival</span></span></a>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <label class="visually-hidden" for="edicion">Edición</label>
+      <select id="edicion" class="form-select form-select-sm selector-edicion w-auto">
+        <option>Festival 2027</option>
+        <option>Festival 2028 (borrador)</option>
+      </select>
+      <a class="btn btn-sm btn-claro" href="../index.html">Ver sitio público</a>
+    </div>
+  </div>
+</header>
+<div class="admin-layout">
+  <nav class="admin-menu" aria-label="Administración">
+    <a href="index.html" class="activo" aria-current="page">Panel</a>
+    <a href="categorias.html">Categorías</a>
+    <a href="votaciones.html">Votaciones</a>
+    <a href="opciones.html">Opciones</a>
+    <a href="resultados.html">Resultados</a>
+    <a href="../login.html">Salir</a>
+  </nav>
+  <main id="contenido" class="px-3 px-lg-4 pb-4">
+<div class="admin-titulo">
+  <div><h1>Panel</h1><p class="texto-suave m-0">Edición activa: Festival 2027</p></div>
+  <a class="btn btn-primary" href="votaciones.html">Nueva votación</a>
+</div>
+<div class="resumen-admin mb-4">
+  <div class="dato"><b>4</b><span>categorías</span></div>
+  <div class="dato"><b>5</b><span>votaciones (3 abiertas)</span></div>
+  <div class="dato"><b>18</b><span>opciones cargadas</span></div>
+  <div class="dato"><b>1.284</b><span>votos registrados</span></div>
+</div>
+<div class="row g-3">
+  <div class="col-xl-8">
+    <div class="panel">
+      <h2>Votaciones de esta edición</h2>
+      <div class="table-responsive">
+        <table class="table tabla-admin">
+          <thead><tr><th scope="col">Votación</th><th scope="col">Categoría</th><th scope="col">Estado</th><th scope="col">Votos</th><th scope="col"><span class="visually-hidden">Acciones</span></th></tr></thead>
+          <tbody>
+            <tr><td>Canción favorita del público</td><td>Música</td><td><span class="etiqueta etiqueta-abierta">Abierta</span></td><td>642</td><td class="acciones"><a href="resultados.html">Resultados</a></td></tr>
+            <tr><td>Agrupación favorita del público</td><td>Música</td><td><span class="etiqueta etiqueta-abierta">Abierta</span></td><td>311</td><td class="acciones"><a href="resultados.html">Resultados</a></td></tr>
+            <tr><td>Comparsa más alegre del desfile</td><td>Desfile y comparsas</td><td><span class="etiqueta etiqueta-abierta">Abierta</span></td><td>207</td><td class="acciones"><a href="resultados.html">Resultados</a></td></tr>
+            <tr><td>Mejor vestuario de Piloneras</td><td>Piloneras</td><td><span class="etiqueta etiqueta-pronto">Próximamente</span></td><td>0</td><td class="acciones"><a href="votaciones.html">Editar</a></td></tr>
+            <tr><td>Presentación más recordada</td><td>Reconocimientos del público</td><td><span class="etiqueta etiqueta-cerrada">Cerrada</span></td><td>124</td><td class="acciones"><a href="resultados.html">Resultados</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="panel">
+      <h2>Edición del Festival</h2>
+      <p class="mb-1"><strong>Festival 2027</strong></p>
+      <p class="texto-suave">Las categorías, votaciones y opciones pertenecen a una edición. Crear una edición nueva permite reutilizar la plataforma en otros años o eventos.</p>
+      <button class="btn btn-outline-dark w-100" type="button">Crear nueva edición</button>
+      <div class="nota-pendiente mt-3"><strong>Pendiente de validación:</strong> qué roles de administrador habrá y qué puede hacer cada uno.</div>
+    </div>
+  </div>
+</div>
+</main>
+</div>
+<footer class="pie pie-admin">
+  <div class="container">
+    <div class="pie-ficha"><span>Prototipo académico · Entrega 1, Desarrollo Web</span><span>Pantalla <strong>UI-10</strong> · Panel principal · Caso de uso CU-05 y CU-09 · <a href="../mapa.html">Mapa del prototipo</a></span></div>
+  </div>
+</footer>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/prototipo.js"></script>
+</body>
+</html>

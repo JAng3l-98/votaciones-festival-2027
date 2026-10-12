@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestión de opciones | Votaciones del Festival 2027 (prototipo)</title>
+<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="../assets/css/estilos.css">
+</head>
+<body class="admin-body">
+<a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#contenido">Saltar al contenido</a>
+<div class="aviso-academico">Prototipo académico con datos de ejemplo. No es un sitio oficial del Festival. <a href="https://festivalvallenato.com/" target="_blank" rel="noopener">Ir a festivalvallenato.com</a></div>
+<header class="admin-encabezado">
+  <div class="container-fluid px-3 px-lg-4 py-2 d-flex flex-wrap gap-2 align-items-center justify-content-between">
+    <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Administración</strong><span>Votaciones del Festival</span></span></a>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <label class="visually-hidden" for="edicion">Edición</label>
+      <select id="edicion" class="form-select form-select-sm selector-edicion w-auto">
+        <option>Festival 2027</option>
+        <option>Festival 2028 (borrador)</option>
+      </select>
+      <a class="btn btn-sm btn-claro" href="../index.html">Ver sitio público</a>
+    </div>
+  </div>
+</header>
+<div class="admin-layout">
+  <nav class="admin-menu" aria-label="Administración">
+    <a href="index.html">Panel</a>
+    <a href="categorias.html">Categorías</a>
+    <a href="votaciones.html">Votaciones</a>
+    <a href="opciones.html" class="activo" aria-current="page">Opciones</a>
+    <a href="resultados.html">Resultados</a>
+    <a href="../login.html">Salir</a>
+  </nav>
+  <main id="contenido" class="px-3 px-lg-4 pb-4">
+<div class="admin-titulo">
+  <div><h1>Opciones</h1><p class="texto-suave m-0">Lo que el público puede elegir en cada votación</p></div>
+</div>
+<div class="panel mb-3">
+  <label class="form-label" for="o-votacion">Votación</label>
+  <select class="form-select" id="o-votacion" style="max-width: 32rem">
+    <option>Canción favorita del público</option><option>Agrupación favorita del público</option><option>Comparsa más alegre del desfile</option><option>Mejor vestuario de Piloneras</option>
+  </select>
+</div>
+<div class="row g-3">
+  <div class="col-xxl-7">
+    <div class="panel">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2"><h2 class="m-0">Opciones cargadas</h2></div>
+      <div class="table-responsive">
+        <table class="table tabla-admin">
+          <thead><tr><th scope="col">Orden</th><th scope="col">Opción</th><th scope="col">Descripción</th><th scope="col"><span class="visually-hidden">Acciones</span></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Canción A</td><td>Intérprete de ejemplo 1</td><td class="acciones"><button class="btn btn-outline-dark btn-sm" type="button">Editar</button></td></tr>
+            <tr><td>2</td><td>Canción B</td><td>Intérprete de ejemplo 2</td><td class="acciones"><button class="btn btn-outline-dark btn-sm" type="button">Editar</button></td></tr>
+            <tr><td>3</td><td>Canción C</td><td>Intérprete de ejemplo 3</td><td class="acciones"><button class="btn btn-outline-dark btn-sm" type="button">Editar</button></td></tr>
+            <tr><td>4</td><td>Canción D</td><td>Intérprete de ejemplo 4</td><td class="acciones"><button class="btn btn-outline-dark btn-sm" type="button">Editar</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xxl-5">
+    <div class="panel">
+      <h2>Agregar opción</h2>
+      <form data-demo novalidate>
+        <div class="mb-3"><label class="form-label" for="o-nombre">Nombre</label><input class="form-control" id="o-nombre" placeholder="Ej.: Canción E" required></div>
+        <div class="mb-3"><label class="form-label" for="o-desc">Descripción</label><input class="form-control" id="o-desc" placeholder="Ej.: Intérprete o agrupación"></div>
+        <div class="mb-3"><label class="form-label" for="o-img">Imagen</label><input class="form-control" id="o-img" type="file" accept="image/*"></div>
+        <div class="mb-4"><label class="form-label" for="o-orden">Orden</label><input class="form-control" id="o-orden" type="number" min="1" value="5"></div>
+        <button class="btn btn-primary w-100" type="submit">Agregar opción</button>
+        <p class="alert alert-success mt-3 mb-0" role="status" tabindex="-1" data-mensaje hidden>Opción agregada (simulación del prototipo).</p>
+      </form>
+    </div>
+  </div>
+</div>
+</main>
+</div>
+<footer class="pie pie-admin">
+  <div class="container">
+    <div class="pie-ficha"><span>Prototipo académico · Entrega 1, Desarrollo Web</span><span>Pantalla <strong>UI-13</strong> · Gestión de opciones · Caso de uso CU-07 · <a href="../mapa.html">Mapa del prototipo</a></span></div>
+  </div>
+</footer>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/prototipo.js"></script>
+</body>
+</html>

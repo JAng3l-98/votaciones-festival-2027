@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Categorías | Votaciones del Festival 2027 (prototipo)</title>
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/css/estilos.css">
+</head>
+<body>
+<a class="visually-hidden-focusable btn btn-primary position-absolute m-2" href="#contenido">Saltar al contenido</a>
+<div class="aviso-academico">Prototipo académico con datos de ejemplo. No es un sitio oficial del Festival. <a href="https://festivalvallenato.com/" target="_blank" rel="noopener">Ir a festivalvallenato.com</a></div>
+<header class="encabezado">
+  <nav class="navbar navbar-expand-lg" aria-label="Principal">
+    <div class="container">
+      <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027</span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="categorias.html">Categorías</a></li>
+          <li class="nav-item"><a class="nav-link" href="votaciones.html">Votaciones</a></li>
+          <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a class="btn btn-claro btn-sm w-100" href="login.html">Ingresar</a></li><li class="nav-item ms-lg-2 mt-2 mb-2 my-lg-0"><a class="btn btn-primary btn-sm w-100" href="registro.html">Crear cuenta</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="fuelle" aria-hidden="true"></div>
+</header>
+<main id="contenido">
+<section class="seccion">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-2">
+      <h1 class="m-0">Categorías</h1>
+    </div>
+    <p class="lead mt-2 mb-4">Festival 2027. Cada categoría agrupa una o varias votaciones.</p>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <a class="ficha ficha-categoria cat-musica" href="votaciones.html">
+          <div class="cat-cabecera"><svg class="ilustracion" width="72" height="72" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="14" width="14" height="36" rx="3"/><path d="M8 21h6M8 27h6M8 33h6M8 39h6M8 45h6"/><rect x="46" y="14" width="14" height="36" rx="3"/><path d="M18 16l4 3 4-3 4 3 4-3 4 3 4-3 4 3M18 48l4-3 4 3 4-3 4 3 4-3 4 3 4-3"/><path d="M22 19v26M26 16v32M30 19v26M34 16v32M38 19v26M42 16v32"/><g fill="currentColor" stroke="none"><circle cx="50" cy="21" r="1.8"/><circle cx="56" cy="21" r="1.8"/><circle cx="50" cy="28" r="1.8"/><circle cx="56" cy="28" r="1.8"/><circle cx="50" cy="35" r="1.8"/><circle cx="56" cy="35" r="1.8"/><circle cx="50" cy="42" r="1.8"/><circle cx="56" cy="42" r="1.8"/></g></svg></div>
+          <div class="cat-cuerpo">
+            <h3>Música</h3>
+            <p class="meta mb-2">Canciones, intérpretes y agrupaciones.</p>
+            <span class="conteo">2 votaciones abiertas</span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a class="ficha ficha-categoria cat-desfile" href="votaciones.html">
+          <div class="cat-cabecera"><svg class="ilustracion" width="72" height="72" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="32" cy="16" rx="20" ry="6"/><path d="M12 16l3 32M52 16l-3 32M15 48q17 8 34 0"/><path d="M14 23l6 22 6-21 6 23 6-23 6 21 6-22"/></svg></div>
+          <div class="cat-cuerpo">
+            <h3>Desfile y comparsas</h3>
+            <p class="meta mb-2">Comparsas y presentaciones del desfile.</p>
+            <span class="conteo">1 votación abierta</span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a class="ficha ficha-categoria cat-piloneras" href="votaciones.html">
+          <div class="cat-cabecera"><svg class="ilustracion" width="72" height="72" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 26h40l-5 20H17z"/><path d="M19 46l-2 6h30l-2-6"/><path d="M28 28l14-22" stroke-width="5"/></svg></div>
+          <div class="cat-cuerpo">
+            <h3>Piloneras</h3>
+            <p class="meta mb-2">Vestuario y baile del desfile de Piloneras.</p>
+            <span class="conteo">1 votación próximamente</span>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a class="ficha ficha-categoria cat-reconocimientos" href="votaciones.html">
+          <div class="cat-cabecera"><svg class="ilustracion" width="72" height="72" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 8l7 15 16 2-12 11 3 16-14-8-14 8 3-16L9 25l16-2z"/></svg></div>
+          <div class="cat-cuerpo">
+            <h3>Reconocimientos del público</h3>
+            <p class="meta mb-2">Distinciones que entrega el público.</p>
+            <span class="conteo">1 votación cerrada</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="pie">
+  <div class="container">
+    <div class="pie-principal">
+      <div>
+        <a class="marca" href="index.html"><span class="marca-icono" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3.5 13h17v7.5h-17z" fill="#600F08"/><path d="M7 3.5h10v9.5H7z" fill="#fff" stroke="#600F08" stroke-width="1.4"/><path d="M9.4 8.4l1.9 1.9 3.5-3.7" fill="none" stroke="#EA3930" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="marca-texto"><strong>Votaciones del Festival</strong><span>Leyenda Vallenata 2027 · Valledupar</span></span></a>
+        <p class="mt-3 mb-0">Las votaciones del público del Festival, desde cualquier celular.</p>
+      </div>
+      <nav class="pie-enlaces" aria-label="Enlaces del pie">
+        <a href="index.html">Inicio</a>
+        <a href="categorias.html">Categorías</a>
+        <a href="votaciones.html">Votaciones</a>
+        <a href="login.html">Ingresar</a>
+        <a href="registro.html">Crear cuenta</a>
+      </nav>
+    </div>
+    <div class="pie-ficha"><span>Prototipo académico · Entrega 1, Desarrollo Web</span><span>Pantalla <strong>UI-04</strong> · Categorías · Caso de uso CU-03 · <a href="mapa.html">Mapa del prototipo</a></span></div>
+  </div>
+</footer>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/prototipo.js"></script>
+</body>
+</html>
