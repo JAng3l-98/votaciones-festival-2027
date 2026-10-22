@@ -1,6 +1,8 @@
 {
   // VS Code ofrece instalar estas extensiones al abrir el proyecto
   "recommendations": [
+    "ms-python.python",
+    "batisteo.vscode-django",
     "ritwickdey.liveserver",
     "esbenp.prettier-vscode",
     "formulahendry.auto-rename-tag",

@@ -1,5 +1,5 @@
 {
-  // Live Server sirve la carpeta docs/, que es la misma que publica GitHub Pages
+  // Live Server muestra el prototipo de la Entrega 1 (carpeta docs/, la que publica GitHub Pages)
   "liveServer.settings.root": "/docs",
   "liveServer.settings.port": 5500,
 
@@ -9,9 +9,14 @@
   "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+
+  // Las plantillas de Django usan {% %} y {{ }}: se reconocen como django-html
+  // y no se formatean solas, para que Prettier no las desordene
+  "files.associations": { "**/templates/**/*.html": "django-html" },
+  "[django-html]": { "editor.formatOnSave": false },
+  "[python]": { "editor.tabSize": 4 },
+
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-
-  // Oculta archivos del sistema en el explorador
-  "files.exclude": { "**/.DS_Store": true }
+  "files.exclude": { "**/.DS_Store": true, "**/__pycache__": true }
 }

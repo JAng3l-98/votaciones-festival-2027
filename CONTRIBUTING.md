@@ -25,6 +25,10 @@ Guía para que cualquier integrante del equipo pueda aportar sin dañar el traba
    `https://github.com/JAng3l-98/votaciones-festival-2027.git`
 3. Elige una carpeta (por ejemplo `Documentos/Proyectos`) y abre el proyecto cuando VS Code lo pregunte.
 4. Instala las extensiones que VS Code recomienda en la esquina inferior derecha.
+5. Sigue la sección **Instalación** del `README.md`: Python, MySQL, entorno virtual, archivo `.env` y `python manage.py migrate`.
+6. Comprueba que todo funciona con `python manage.py runserver` y abre http://127.0.0.1:8000/.
+
+> Usa en Git el mismo correo de tu cuenta de GitHub (paso 1.5). Así tus commits aparecen con tu nombre en el repositorio, que es la evidencia de tu participación.
 
 ## 3. Trabajar en una tarea
 
