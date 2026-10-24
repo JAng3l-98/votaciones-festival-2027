@@ -44,7 +44,6 @@ class VotacionAdmin(admin.ModelAdmin):
     )
     list_filter = ("visible", "es_prueba", "publicacion_resultados")
     search_fields = ("nombre", "slug", "descripcion")
-    date_hierarchy = "fecha_apertura"
     ordering = ("categoria", "orden", "fecha_apertura")
     inlines = [OpcionInline]
 
