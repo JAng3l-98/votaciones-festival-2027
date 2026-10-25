@@ -48,4 +48,18 @@
     {% endif %}
   </div>
 </section>
+
+{% if abiertas %}
+<section class="seccion pt-0">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+      <h2 class="m-0">Votaciones abiertas</h2>
+      <a class="fw-bold" href="{% url 'votaciones:lista' %}">Ver todas</a>
+    </div>
+    <div class="row g-3">
+      {% for votacion in abiertas %}{% include "votaciones/_tarjeta_votacion.html" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
 {% endblock %}

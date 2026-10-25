@@ -1,0 +1,27 @@
+{% comment %}
+  Tarjeta de una votación. Se usa en el inicio y en la lista con
+  {% include "votaciones/_tarjeta_votacion.html" %} dentro de un ciclo que se llame «votacion».
+{% endcomment %}
+{% with estado=votacion.estado %}
+<div class="col-md-6 col-lg-4">
+  <a class="ficha ficha-votacion ficha-{% if estado == 'proxima' %}pronto{% else %}{{ estado }}{% endif %}" href="{{ votacion.get_absolute_url }}">
+    <div class="ficha-imagen{% if not votacion.imagen %} ficha-imagen-vacia{% endif %}">
+      {% if votacion.imagen %}
+        <img src="{{ votacion.imagen.url }}" alt="">
+      {% else %}
+        <span class="cat-inicial" aria-hidden="true">{{ votacion.categoria.nombre|first|upper }}</span>
+      {% endif %}
+    </div>
+    <div class="d-flex justify-content-between gap-2">
+      <span class="meta">{{ votacion.categoria.nombre }}</span>
+      <span class="etiqueta etiqueta-{% if estado == 'proxima' %}pronto{% else %}{{ estado }}{% endif %}">{{ votacion.get_estado_display }}</span>
+    </div>
+    <h3>{{ votacion.nombre }}</h3>
+    <div class="meta">
+      {% if estado == "proxima" %}Abre el {{ votacion.fecha_apertura|date:"j \d\e F \d\e Y"|lower }}
+      {% elif estado == "abierta" %}Cierra el {{ votacion.fecha_cierre|date:"j \d\e F \d\e Y"|lower }}
+      {% else %}Cerró el {{ votacion.fecha_cierre|date:"j \d\e F \d\e Y"|lower }}{% endif %}
+    </div>
+  </a>
+</div>
+{% endwith %}

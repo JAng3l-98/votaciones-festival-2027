@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ votacion.nombre }}{% endblock %}
+
+{% block contenido %}
+{% with estado=votacion.estado %}
+<section class="seccion">
+  <div class="container">
+    <nav aria-label="Ruta" class="mb-2">
+      <a href="{% url 'votaciones:lista' %}">Votaciones</a>
+      <span class="texto-suave">/ <a href="{% url 'votaciones:lista' %}?categoria={{ votacion.categoria.slug }}">{{ votacion.categoria.nombre }}</a></span>
+    </nav>
+
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <h1>{{ votacion.nombre }}</h1>
+        <div class="d-flex flex-wrap gap-2 align-items-center my-3">
+          <span class="etiqueta etiqueta-{% if estado == 'proxima' %}pronto{% else %}{{ estado }}{% endif %}">{{ votacion.get_estado_display }}</span>
+          {% if votacion.es_prueba %}<span class="etiqueta etiqueta-pendiente">Votación de prueba</span>{% endif %}
+          <span class="texto-suave">
+            {% if estado == "proxima" %}Abre el {{ votacion.fecha_apertura|date:"j \d\e F \d\e Y, g:i a"|lower }}
+            {% elif estado == "abierta" %}Cierra el {{ votacion.fecha_cierre|date:"j \d\e F \d\e Y, g:i a"|lower }}
+            {% else %}Cerró el {{ votacion.fecha_cierre|date:"j \d\e F \d\e Y, g:i a"|lower }}{% endif %}
+          </span>
+        </div>
+        {% if votacion.descripcion %}<p>{{ votacion.descripcion|linebreaksbr }}</p>{% endif %}
+
+        <h2 class="h3 mt-4 mb-2">Reglas de esta votación</h2>
+        <ul class="reglas">
+          <li>Necesitas una cuenta registrada para votar.</li>
+          <li>Cada persona puede votar {{ votacion.votos_por_usuario }} ve{{ votacion.votos_por_usuario|pluralize:"z,ces" }} en esta votación.
+            <span class="etiqueta etiqueta-pendiente">Pendiente de validación</span></li>
+          <li>Publicación de resultados: {{ votacion.get_publicacion_resultados_display|lower }}.
+            <span class="etiqueta etiqueta-pendiente">Pendiente de validación</span></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-5 order-first order-lg-last">
+        <figure class="imagen-votacion m-0">
+          {% if votacion.imagen %}
+            <img class="escena" src="{{ votacion.imagen.url }}" alt="{{ votacion.nombre }}">
+          {% else %}
+            <div class="escena ficha-imagen-vacia"><span class="cat-inicial" aria-hidden="true">{{ votacion.categoria.nombre|first|upper }}</span></div>
+          {% endif %}
+        </figure>
+        <p class="texto-suave mt-3 mb-0">{{ opciones|length }} opci{{ opciones|length|pluralize:"ón,ones" }} disponible{{ opciones|length|pluralize }}</p>
+      </div>
+    </div>
+
+    <h2 class="h3 mt-5 mb-3">Opciones</h2>
+    <div class="row g-3 opciones-lista">
+      {% for opcion in opciones %}
+        <div class="col-md-6">
+          <div class="opcion">
+            <div class="cuerpo">
+              {% if opcion.imagen %}
+                <img class="miniatura" src="{{ opcion.imagen.url }}" alt="">
+              {% else %}
+                <span class="miniatura" aria-hidden="true">{{ opcion.nombre|first|upper }}</span>
+              {% endif %}
+              <div>
+                <strong>{{ opcion.nombre }}</strong>
+                {% if opcion.descripcion %}<div class="texto-suave small">{{ opcion.descripcion }}</div>{% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12"><p>Esta votación aún no tiene opciones.</p></div>
+      {% endfor %}
+    </div>
+
+    <div class="nota-pendiente mt-4"><strong>Próximamente:</strong> el registro del voto se habilitará en la siguiente versión del sistema.</div>
+
+    <div class="barra-accion">
+      <a class="btn btn-outline-dark" href="{% url 'votaciones:lista' %}">Volver a las votaciones</a>
+    </div>
+  </div>
+</section>
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block titulo %}Categorías{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <h1 class="m-0">Categorías</h1>
+    {% if edicion %}
+      <p class="lead mt-2 mb-4">{{ edicion.nombre }}. Cada categoría agrupa una o varias votaciones.</p>
+      <div class="row g-3">
+        {% for categoria in categorias %}
+          <div class="col-md-6">
+            <a class="ficha ficha-categoria {% cycle 'cat-musica' 'cat-desfile' 'cat-piloneras' 'cat-reconocimientos' %}"
+               href="{% url 'votaciones:lista' %}?categoria={{ categoria.slug }}">
+              <div class="cat-cabecera"><span class="cat-inicial" aria-hidden="true">{{ categoria.nombre|first|upper }}</span></div>
+              <div class="cat-cuerpo">
+                <h3>{{ categoria.nombre }}</h3>
+                {% if categoria.descripcion %}<p class="meta mb-2">{{ categoria.descripcion }}</p>{% endif %}
+                <span class="conteo">{{ categoria.total }} votaci{{ categoria.total|pluralize:"ón,ones" }}</span>
+              </div>
+            </a>
+          </div>
+        {% empty %}
+          <div class="col-12"><p class="lead">Todavía no hay categorías publicadas en esta edición.</p></div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="lead mt-2">Aún no hay ediciones registradas.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
