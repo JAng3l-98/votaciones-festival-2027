@@ -1,110 +1,102 @@
-from datetime import timedelta
+"""
+Carga datos de prueba: la edición 2027, cuatro categorías, seis votaciones y sus opciones.
+
+Uso:  python manage.py cargar_datos_prueba
+
+Se puede ejecutar varias veces: si un dato ya existe, lo actualiza en lugar de duplicarlo.
+Son datos inventados para probar el sistema; no son finalistas reales del Festival.
+"""
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from django.utils import timezone
+from django.utils.text import slugify
 
-from votaciones.models import Edicion, Categoria, Votacion, Opcion
+from votaciones.models import Categoria, Edicion, Opcion, Votacion
+
+BOGOTA = ZoneInfo("America/Bogota")
+
+
+def fecha(texto):
+    """Convierte «2027-04-30 23:59» en una fecha con la hora de Colombia."""
+    return datetime.strptime(texto, "%Y-%m-%d %H:%M").replace(tzinfo=BOGOTA)
+
+
+CATEGORIAS = [
+    # (identificador, nombre, descripción)
+    ("musica", "Música", "Canciones, intérpretes y agrupaciones."),
+    ("desfile-y-comparsas", "Desfile y comparsas", "Comparsas y presentaciones del desfile."),
+    ("piloneras", "Piloneras", "Vestuario y baile del desfile de Piloneras."),
+    ("reconocimientos-del-publico", "Reconocimientos del público", "Distinciones que entrega el público."),
+]
+
+VOTACIONES = [
+    # (categoría, nombre, apertura, cierre, publicación de resultados, de prueba, visible, opciones)
+    ("musica", "Canción favorita del público", "2026-10-01 08:00", "2027-04-30 23:59", "al_cierre", False, True,
+     ["Brisa del Valle", "Acordeón de mi tierra", "Noches del Cesar", "Camino de la Sierra"]),
+    ("musica", "Agrupación favorita del público", "2026-10-01 08:00", "2027-04-30 23:59", "al_cierre", False, True,
+     ["Agrupación Aurora", "Agrupación Horizonte", "Agrupación Sabana"]),
+    ("desfile-y-comparsas", "Comparsa más alegre del desfile", "2026-10-15 08:00", "2027-04-28 23:59", "en_vivo", False, True,
+     ["Comparsa Colores del Valle", "Comparsa Alegría", "Comparsa Raíces"]),
+    ("piloneras", "Mejor vestuario de Piloneras", "2027-04-26 08:00", "2027-04-29 23:59", "al_cierre", False, True,
+     ["Grupo Pilón Dorado", "Grupo Tradición", "Grupo Maíz y Tambor"]),
+    ("reconocimientos-del-publico", "Presentación más recordada", "2026-09-01 08:00", "2026-10-15 23:59", "al_cierre", False, True,
+     ["Presentación de apertura", "Presentación de cierre", "Homenaje a los juglares"]),
+    ("musica", "Votación de ensayo", "2026-10-01 08:00", "2027-04-30 23:59", "no_publicar", True, False,
+     ["Opción de prueba 1", "Opción de prueba 2"]),
+]
 
 
 class Command(BaseCommand):
-    help = "Carga datos de prueba del Festival sin duplicar registros."
+    help = "Carga datos de prueba de la edición 2027 (categorías, votaciones y opciones)."
 
     @transaction.atomic
-    def handle(self, *args, **options):
-        ahora = timezone.now()
+    def handle(self, *args, **opciones):
+        edicion, _ = Edicion.objects.update_or_create(
+            anio=2027,
+            defaults={
+                "nombre": "Festival de la Leyenda Vallenata 2027",
+                "numero": 60,
+                "fecha_inicio": date(2027, 4, 28),
+                "fecha_fin": date(2027, 5, 1),
+                "descripcion": "Edición 60 del Festival. Datos de prueba.",
+                "activa": True,
+            },
+        )
 
-        with transaction.atomic():
-            edicion, creada = Edicion.objects.get_or_create(
-                anio=2027,
-                defaults={
-                    "nombre": "Festival de la Leyenda Vallenata 2027",
-                    "numero": 60,
-                    "fecha_inicio": "2027-04-29",
-                    "fecha_fin": "2027-05-02",
-                    "descripcion": "Edicion de prueba del Festival.",
-                    "activa": True,
-                },
+        categorias = {}
+        for orden, (slug, nombre, descripcion) in enumerate(CATEGORIAS, start=1):
+            categorias[slug], _ = Categoria.objects.update_or_create(
+                edicion=edicion, slug=slug,
+                defaults={"nombre": nombre, "descripcion": descripcion, "orden": orden, "visible": True},
             )
 
-            if creada:
-                self.stdout.write("Edicion creada.")
-            else:
-                self.stdout.write("La edicion ya existia.")
-
-            datos_categorias = [
-                ("Acordeon profesional", "acordeon-profesional"),
-                ("Cancion inedita", "cancion-inedita"),
-                ("Piqueria", "piqueria"),
-                ("Conjunto tipico", "conjunto-tipico"),
-            ]
-
-            categorias = []
-
-            for orden, (nombre, slug) in enumerate(datos_categorias, start=1):
-                categoria, _ = Categoria.objects.get_or_create(
-                    edicion=edicion,
-                    slug=slug,
-                    defaults={
-                        "nombre": nombre,
-                        "descripcion": f"Categoria de prueba: {nombre}.",
-                        "orden": orden,
-                        "visible": True,
-                    },
+        total_opciones = 0
+        for orden, (slug_categoria, nombre, apertura, cierre, publicacion, prueba, visible, nombres_opciones) in enumerate(VOTACIONES, start=1):
+            votacion, _ = Votacion.objects.update_or_create(
+                categoria=categorias[slug_categoria], nombre=nombre,
+                defaults={
+                    "slug": slugify(nombre),          # «Canción favorita…» → «cancion-favorita…»
+                    "descripcion": f"Elige tu favorito en «{nombre}». Datos de prueba.",
+                    "fecha_apertura": fecha(apertura),
+                    "fecha_cierre": fecha(cierre),
+                    "votos_por_usuario": 1,
+                    "publicacion_resultados": publicacion,
+                    "es_prueba": prueba,
+                    "visible": visible,
+                    "orden": orden,
+                },
+            )
+            for orden_opcion, nombre_opcion in enumerate(nombres_opciones, start=1):
+                Opcion.objects.update_or_create(
+                    votacion=votacion, nombre=nombre_opcion,
+                    defaults={"descripcion": "Dato de prueba.", "orden": orden_opcion, "activa": True},
                 )
-                categorias.append(categoria)
+                total_opciones += 1
 
-            datos_votaciones = [
-                ("Rey vallenato - ronda 1", "rey-ronda-1", 0),
-                ("Rey vallenato - ronda 2", "rey-ronda-2", 0),
-                ("Mejor cancion inedita", "mejor-cancion-inedita", 1),
-                ("Mejor interprete de piqueria", "mejor-piqueria", 2),
-                ("Mejor conjunto tipico", "mejor-conjunto-tipico", 3),
-                ("Favorito del publico", "favorito-publico", 1),
-            ]
-
-            nombres_opciones = [
-                ("Participante de prueba A", "Primera opcion de demostracion."),
-                ("Participante de prueba B", "Segunda opcion de demostracion."),
-                ("Participante de prueba C", "Tercera opcion de demostracion."),
-            ]
-
-            for orden, (nombre, slug, indice_categoria) in enumerate(
-                datos_votaciones, start=1
-            ):
-                votacion, _ = Votacion.objects.get_or_create(
-                    categoria=categorias[indice_categoria],
-                    slug=slug,
-                    defaults={
-                        "nombre": nombre,
-                        "descripcion": "Votacion de demostracion.",
-                        "fecha_apertura": ahora - timedelta(days=1),
-                        "fecha_cierre": ahora + timedelta(days=30),
-                        "votos_por_usuario": 1,
-                        "publicacion_resultados": Votacion.Publicacion.AL_CIERRE,
-                        "es_prueba": True,
-                        "visible": True,
-                        "orden": orden,
-                    },
-                )
-
-                for orden_opcion, (nombre_opcion, descripcion) in enumerate(
-                    nombres_opciones, start=1
-                ):
-                    Opcion.objects.get_or_create(
-                        votacion=votacion,
-                        nombre=nombre_opcion,
-                        defaults={
-                            "descripcion": descripcion,
-                            "orden": orden_opcion,
-                            "activa": True,
-                        },
-                    )
-
-        self.stdout.write(self.style.SUCCESS(
-            "Carga finalizada. Resumen de registros:"
-        ))
-        self.stdout.write(f"Ediciones: {Edicion.objects.count()}")
-        self.stdout.write(f"Categorias: {Categoria.objects.count()}")
-        self.stdout.write(f"Votaciones: {Votacion.objects.count()}")
-        self.stdout.write(f"Opciones: {Opcion.objects.count()}")
+        if opciones["verbosity"] > 0:   # las pruebas automáticas lo llaman en silencio (verbosity=0)
+            self.stdout.write(self.style.SUCCESS(
+                f"Datos de prueba listos: edición {edicion.anio}, {len(CATEGORIAS)} categorías, "
+                f"{len(VOTACIONES)} votaciones y {total_opciones} opciones."
+            ))

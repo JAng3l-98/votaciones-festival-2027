@@ -116,6 +116,7 @@ El archivo `.env` **no se sube a GitHub**: cada integrante tiene el suyo.
 ```bash
 python manage.py migrate          # crea las tablas en MySQL
 python manage.py createsuperuser  # usuario para entrar a /admin
+python manage.py cargar_datos_prueba   # edición 2027 con categorías, votaciones y opciones de prueba
 python manage.py runserver
 ```
 
