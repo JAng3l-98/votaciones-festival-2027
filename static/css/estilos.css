@@ -562,3 +562,15 @@ a.ficha-votacion:hover .ficha-imagen { filter: brightness(1.08); }
 
 /* Recuadro de atajos para el docente (UI-03): alto según su contenido */
 .atajos { height: auto; border-style: dashed; }
+
+/* ---------- Interfaz pública con datos de MySQL (Entrega 2) ---------- */
+.ficha-imagen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ficha-imagen-vacia {
+  display: grid; place-items: center;
+  background: linear-gradient(160deg, var(--rojo) 0%, var(--granate) 100%);
+  color: var(--dorado);
+}
+.cat-inicial { font-family: "Raleway", sans-serif; font-weight: 800; font-size: 3.2rem; line-height: 1; }
+.imagen-votacion .ficha-imagen-vacia { border-radius: var(--radio-m); }
+.opciones-lista .opcion { cursor: default; }
+img.miniatura { object-fit: cover; }
