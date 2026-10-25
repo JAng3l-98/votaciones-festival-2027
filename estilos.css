@@ -1,0 +1,576 @@
+/* =========================================================
+   Sistema Web de Votaciones · Festival de la Leyenda Vallenata 2027
+   Prototipo académico (Entrega 1) — hoja de estilos propia
+
+   Identidad tomada del sitio oficial festivalvallenato.com:
+   rojo Festival, granate, negro, gris claro y dorado; tipografías
+   Poppins (texto) y Raleway (títulos). Se carga DESPUÉS de Bootstrap.
+
+   Mobile first: los estilos base son para celular (360 px);
+   los @media (min-width) agregan tablet (768 px) y computador (992 px+).
+   ========================================================= */
+
+/* ---------- Tipografías (archivos locales, licencia OFL) ---------- */
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/poppins-regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/poppins-medium.woff") format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/poppins-semibold.woff") format("woff");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/poppins-bold.woff") format("woff");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Raleway";
+  src: url("../fonts/raleway-var.woff") format("woff");
+  font-weight: 100 900;   /* fuente variable: todos los grosores en un archivo */
+  font-display: swap;
+}
+
+/* ---------- Colores y medidas (cambiar aquí cambia todo el sitio) ---------- */
+:root {
+  /* Colores del sitio oficial */
+  --rojo: #CC433C;          /* menú activo, botones, fechas */
+  --rojo-hondo: #A9342E;    /* botón al pasar el mouse */
+  --rojo-logo: #EA3930;     /* círculo del logo */
+  --granate: #600F08;       /* pestañas y fondos profundos */
+  --negro: #000000;         /* cuenta regresiva y pie */
+  --gris-fondo: #F8F8F8;    /* secciones alternas */
+  --gris-titulo: #555555;   /* títulos y texto */
+  --dorado: #E1A861;        /* realces sobre fondo oscuro */
+  --beige: #E5D39C;         /* cuenta regresiva: días */
+  --crema: #F8E7CF;         /* cuenta regresiva: minutos */
+
+  /* Apoyo */
+  --tinta: #2B2B2B;
+  --tinta-suave: #666666;
+  --linea: #E4E4E4;
+  --blanco: #FFFFFF;
+  --rojo-suave: #FBEDEC;
+  --pendiente-fondo: #FFF4CC;
+  --pendiente-borde: #C99500;
+  --pendiente-texto: #6B4F00;
+
+  --radio-s: 8px;
+  --radio-m: 12px;
+  --sombra: 0 10px 30px rgba(0, 0, 0, .07);
+  --ancho-lectura: 68ch;
+
+  /* Bootstrap */
+  --bs-body-font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bs-body-color: var(--tinta);
+  --bs-body-bg: var(--blanco);
+  --bs-primary: var(--rojo);
+  --bs-primary-rgb: 204, 67, 60;
+  --bs-link-color: var(--rojo);
+  --bs-link-color-rgb: 204, 67, 60;
+  --bs-link-hover-color: var(--granate);
+  --bs-border-color: var(--linea);
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main { flex: 1 0 auto; }
+
+/* ---------- Tipografía ---------- */
+h1, h2, h3 {
+  font-family: "Raleway", "Poppins", sans-serif;
+  color: var(--gris-titulo);
+  line-height: 1.15;
+}
+h1 { font-size: clamp(2rem, 6.5vw, 3.3rem); font-weight: 800; }
+h2 { font-size: clamp(1.5rem, 4.4vw, 2.2rem); font-weight: 800; }
+h3 { font-size: 1.2rem; font-weight: 700; color: var(--tinta); }
+.lead { font-size: 1.08rem; color: var(--tinta-suave); max-width: var(--ancho-lectura); }
+.texto-suave { color: var(--tinta-suave); }
+p { max-width: var(--ancho-lectura); }
+
+/* Divisor rojo bajo los títulos, como en el sitio oficial */
+.seccion h1::after,
+.seccion h2:not(.h3)::after,
+.admin-titulo h1::after {
+  content: "";
+  display: block;
+  width: 36px; height: 3px;
+  margin-top: .8rem;
+  background: linear-gradient(90deg,
+    var(--rojo) 0 10px, transparent 10px 14px,
+    var(--granate) 14px 28px, transparent 28px 32px,
+    var(--rojo) 32px 36px);
+}
+
+/* Foco visible para teclado */
+:focus-visible {
+  outline: 3px solid var(--rojo) !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+/* ---------- Aviso académico ---------- */
+.aviso-academico {
+  background: var(--negro);
+  color: #E6E6E6;
+  font-size: .8rem;
+  padding: .4rem .75rem;
+  text-align: center;
+}
+.aviso-academico a { color: var(--dorado); font-weight: 600; margin-left: .35rem; }
+
+/* ---------- Encabezado blanco, como el sitio oficial ---------- */
+.encabezado {
+  background: var(--blanco);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+  position: relative; z-index: 10;
+}
+.encabezado .navbar { padding: .6rem 0; }
+.marca { display: flex; align-items: center; gap: .6rem; color: var(--tinta); text-decoration: none; }
+.marca:hover { color: var(--tinta); }
+.marca-icono {
+  width: 44px; height: 44px; flex: none;
+  border-radius: 50%;
+  background: var(--rojo-logo);
+  display: grid; place-items: center;
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .35);
+}
+.marca-texto { line-height: 1.1; }
+.marca-texto strong { display: block; font-family: "Raleway", sans-serif; font-weight: 800; font-size: 1.12rem; }
+.marca-texto span { font-size: .78rem; color: var(--tinta-suave); }
+
+.encabezado .nav-link {
+  color: var(--negro);
+  font-weight: 500;
+  padding: .7rem .2rem;
+}
+.encabezado .nav-link:hover,
+.encabezado .nav-link.active { color: var(--rojo); }
+.encabezado .navbar-toggler { border-color: var(--linea); padding: .45rem .6rem; }
+.encabezado .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23000' stroke-linecap='round' stroke-width='2.4' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.encabezado .btn-claro { background: var(--blanco); color: var(--tinta); border: 1.5px solid var(--tinta); }
+.encabezado .btn-claro:hover { background: var(--tinta); color: var(--blanco); }
+
+.usuario-chip {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--gris-fondo);
+  border-radius: 999px; padding: .3rem .8rem .3rem .3rem;
+  color: var(--tinta); font-weight: 600; font-size: .92rem;
+}
+.usuario-chip .inicial {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--rojo); color: var(--blanco);
+  display: grid; place-items: center; font-weight: 700;
+}
+
+/* ---------- Elemento folclórico: el fuelle del acordeón ----------
+   Franja de pliegues en zigzag. Va bajo el encabezado y en la confirmación del voto. */
+.fuelle {
+  height: 12px;
+  background:
+    linear-gradient(135deg, var(--granate) 25%, transparent 25%) -6px 0 / 12px 12px,
+    linear-gradient(225deg, var(--granate) 25%, transparent 25%) -6px 0 / 12px 12px,
+    var(--rojo);
+}
+.fuelle-rojo {
+  height: 12px;
+  background:
+    linear-gradient(135deg, var(--negro) 25%, transparent 25%) -6px 0 / 12px 12px,
+    linear-gradient(225deg, var(--negro) 25%, transparent 25%) -6px 0 / 12px 12px,
+    var(--dorado);
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  --bs-btn-padding-y: .75rem;
+  --bs-btn-padding-x: 1.4rem;
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-radius: var(--radio-s);
+  min-height: 48px;
+}
+.btn-primary {
+  --bs-btn-bg: var(--rojo);
+  --bs-btn-border-color: var(--rojo);
+  --bs-btn-hover-bg: var(--rojo-hondo);
+  --bs-btn-hover-border-color: var(--rojo-hondo);
+  --bs-btn-active-bg: var(--granate);
+  --bs-btn-active-border-color: var(--granate);
+  --bs-btn-disabled-bg: #E3A6A2;
+  --bs-btn-disabled-border-color: #E3A6A2;
+}
+.btn-outline-dark {
+  --bs-btn-color: var(--tinta);
+  --bs-btn-border-color: var(--tinta);
+  --bs-btn-hover-bg: var(--tinta);
+  --bs-btn-hover-border-color: var(--tinta);
+}
+.btn-claro { background: var(--blanco); color: var(--tinta); border: 0; }
+.btn-claro:hover { background: var(--dorado); color: var(--negro); }
+.btn-sm { min-height: 38px; --bs-btn-padding-y: .4rem; --bs-btn-padding-x: .9rem; }
+
+/* ---------- Formularios ---------- */
+.form-label { font-weight: 600; margin-bottom: .35rem; }
+.form-control, .form-select {
+  min-height: 48px;
+  border-radius: var(--radio-s);
+  border-color: #CFCFCF;
+  background-color: var(--blanco);
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--rojo);
+  box-shadow: 0 0 0 .2rem rgba(204, 67, 60, .2);
+}
+.form-text { color: var(--tinta-suave); }
+.form-check-input:checked { background-color: var(--rojo); border-color: var(--rojo); }
+
+/* ---------- Etiquetas ---------- */
+.etiqueta {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .76rem; font-weight: 600;
+  padding: .22rem .7rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.etiqueta-abierta { background: #DDF1E6; color: #145C38; }
+.etiqueta-pronto { background: var(--gris-fondo); color: var(--tinta-suave); border-color: var(--linea); }
+.etiqueta-cerrada { background: var(--rojo-suave); color: var(--granate); }
+.etiqueta-pendiente { background: var(--pendiente-fondo); color: var(--pendiente-texto); border-color: var(--pendiente-borde); }
+
+/* ---------- Secciones ---------- */
+.seccion { padding: 2.4rem 0; }
+.seccion-niebla { background: var(--gris-fondo); }
+
+/* Portada oscura y cálida, como el inicio del sitio oficial */
+.portada {
+  background:
+    radial-gradient(circle at 78% 35%, rgba(204, 67, 60, .35) 0, transparent 45%),
+    radial-gradient(circle at 20% 110%, rgba(225, 168, 97, .25) 0, transparent 50%),
+    linear-gradient(160deg, #2A0B06 0%, #120403 55%, #000 100%);
+  color: var(--blanco);
+  padding: 2.4rem 0 2.6rem;
+}
+.portada h1 { color: var(--blanco); max-width: 15ch; }
+.portada .lead { color: rgba(255, 255, 255, .85); }
+.portada .edicion {
+  display: inline-block;
+  background: var(--dorado); color: var(--negro);
+  font-weight: 700; font-size: .9rem;
+  padding: .25rem .8rem; border-radius: 999px; margin-bottom: 1rem;
+}
+
+/* Trilogía del vallenato: acordeón, caja y guacharaca (ilustraciones propias) */
+.trilogia {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .8rem;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(225, 168, 97, .35);
+  border-radius: var(--radio-m);
+  padding: 1rem;
+  color: var(--dorado);
+}
+.trilogia-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; }
+.trilogia figcaption { color: rgba(255, 255, 255, .9); font-weight: 600; font-size: .92rem; }
+.trilogia .ilustracion { width: 64px; height: 64px; }
+.ilustracion { display: block; flex: none; }
+
+/* Banda negra de cuenta regresiva, como el sitio oficial */
+.cuenta-banda { background: var(--negro); color: var(--blanco); padding: 1.8rem 0 2rem; text-align: center; }
+.cuenta-titulo { font-weight: 500; margin: 0 auto 1rem; color: rgba(255, 255, 255, .8); max-width: none; }
+.cuenta-cajas { display: flex; justify-content: center; gap: 1.2rem; }
+.cuenta-cajas div { min-width: 64px; }
+.cuenta-cajas b {
+  display: block;
+  font-size: clamp(2.2rem, 9vw, 3.4rem); font-weight: 700; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.cuenta-cajas div:nth-child(1) b { color: var(--beige); }
+.cuenta-cajas div:nth-child(2) b { color: #B2B2B2; }
+.cuenta-cajas div:nth-child(3) b { color: var(--crema); }
+.cuenta-cajas div:nth-child(4) b { color: var(--blanco); }
+.cuenta-cajas span { display: block; margin-top: .6rem; font-size: .85rem; color: rgba(255, 255, 255, .85); }
+
+/* Pasos de una secuencia real (Regístrate → Elige → Confirma) */
+.pasos { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; counter-reset: paso; }
+.pasos li { counter-increment: paso; display: grid; grid-template-columns: 46px 1fr; gap: .9rem; align-items: start; }
+.pasos li::before {
+  content: counter(paso);
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--rojo); color: var(--blanco);
+  font-weight: 700; font-size: 1.15rem;
+  display: grid; place-items: center;
+}
+.pasos strong { display: block; font-size: 1.05rem; color: var(--tinta); }
+
+/* Tarjetas, con la sombra suave del sitio oficial */
+.ficha {
+  display: block;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-m);
+  padding: 1.15rem 1.2rem;
+  background: var(--blanco);
+  box-shadow: var(--sombra);
+  color: inherit; text-decoration: none;
+  height: 100%;
+}
+a.ficha:hover { border-color: var(--rojo); color: inherit; }
+.ficha h3 { margin: .5rem 0 .35rem; }
+.ficha .meta { font-size: .9rem; color: var(--tinta-suave); }
+
+/* Tarjeta de votación con su ilustración (dibujos propios, sin fotos de terceros) */
+.ficha-votacion { overflow: hidden; }
+.ficha-imagen { margin: -1.15rem -1.2rem 1rem; aspect-ratio: 2 / 1; background: var(--granate); }
+.escena { display: block; width: 100%; height: 100%; }
+a.ficha-votacion:hover .ficha-imagen { filter: brightness(1.08); }
+.ficha-cerrada .ficha-imagen { filter: grayscale(.8); opacity: .85; }
+
+/* Tarjeta de categoría: cabecera de color con su instrumento y borde de fuelle */
+.ficha-categoria { padding: 0; overflow: hidden; }
+.cat-cabecera {
+  position: relative;
+  height: 124px;
+  display: grid; place-items: center;
+  background-color: var(--cat-fondo);
+  background-image: radial-gradient(circle at 22% 18%, rgba(255, 255, 255, .2), transparent 55%);
+  color: var(--cat-icono);
+}
+.cat-cabecera::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 12px;
+  background:
+    linear-gradient(45deg, var(--blanco) 25%, transparent 25%) -6px 0 / 12px 12px,
+    linear-gradient(315deg, var(--blanco) 25%, transparent 25%) -6px 0 / 12px 12px;
+}
+.cat-cabecera .ilustracion { width: 72px; height: 72px; }
+.cat-cuerpo { padding: .6rem 1.2rem 1.15rem; }
+.ficha-categoria .conteo { font-weight: 600; color: var(--rojo); }
+.cat-musica { --cat-fondo: var(--rojo); --cat-icono: var(--crema); }
+.cat-desfile { --cat-fondo: var(--granate); --cat-icono: var(--dorado); }
+.cat-piloneras { --cat-fondo: var(--dorado); --cat-icono: var(--granate); }
+.cat-reconocimientos { --cat-fondo: #1A1A1A; --cat-icono: var(--dorado); }
+
+/* Filtros por categoría (pestañas como las de la programación oficial) */
+.filtros { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .4rem; scrollbar-width: thin; }
+.filtro {
+  flex: none;
+  background: var(--granate); color: var(--blanco);
+  border-radius: var(--radio-s); padding: .55rem 1.1rem; font-weight: 500;
+  text-decoration: none; min-height: 44px;
+  display: inline-flex; align-items: center;
+}
+.filtro:hover { color: var(--blanco); background: var(--rojo-hondo); }
+.filtro.activo { background: var(--rojo); color: var(--blanco); }
+
+/* Indicador del flujo de voto */
+.flujo-voto { list-style: none; display: flex; gap: .4rem; padding: 0; margin: 0 0 1.4rem; font-size: .82rem; }
+.flujo-voto li { flex: 1; text-align: center; padding-top: .55rem; border-top: 4px solid var(--linea); color: var(--tinta-suave); font-weight: 500; }
+.flujo-voto li.hecho { border-color: var(--granate); color: var(--granate); }
+.flujo-voto li.actual { border-color: var(--rojo); color: var(--tinta); font-weight: 700; }
+
+/* Opciones de voto: tarjetas seleccionables grandes */
+.opcion { position: relative; display: block; cursor: pointer; }
+.opcion input { position: absolute; opacity: 0; }
+.opcion .cuerpo {
+  display: grid; grid-template-columns: 64px 1fr 28px; gap: .9rem; align-items: center;
+  border: 2px solid var(--linea); border-radius: var(--radio-m);
+  padding: .8rem; background: var(--blanco); box-shadow: var(--sombra);
+}
+/* Miniatura con forma de disco: etiqueta roja con la letra de la opción */
+.opcion .miniatura {
+  width: 64px; height: 64px; border-radius: 50%;
+  background:
+    radial-gradient(circle closest-side, var(--rojo) 0 40%, var(--crema) 41% 43%, transparent 44%),
+    radial-gradient(circle closest-side, transparent 0 92%, #000 93%),
+    repeating-radial-gradient(circle closest-side, #161616 0 2px, #2C2C2C 2px 4px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .22);
+  display: grid; place-items: center;
+  font-family: "Raleway", sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--blanco);
+}
+.opcion .marca-sel { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #A5A5A5; }
+.opcion input:checked + .cuerpo { border-color: var(--rojo); background: #FFF8F7; }
+.opcion input:checked + .cuerpo .marca-sel {
+  border-color: var(--rojo);
+  background: var(--rojo) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M4 8.5l2.6 2.6L12 5.5'/%3e%3c/svg%3e") center / 18px no-repeat;
+}
+.opcion input:focus-visible + .cuerpo { outline: 3px solid var(--rojo); outline-offset: 2px; }
+
+/* Barra de acción fija en celular durante el voto */
+.barra-accion {
+  position: sticky; bottom: 0;
+  background: var(--blanco);
+  border-top: 1px solid var(--linea);
+  padding: .7rem 0 .8rem;
+  margin-top: 1.5rem;
+  z-index: 5;
+}
+.barra-accion p { font-size: .9rem; }
+
+/* Confirmación y comprobante */
+.resumen-voto { border: 2px solid var(--tinta); border-radius: var(--radio-m); overflow: hidden; background: var(--blanco); }
+.resumen-voto .fila { padding: 1rem 1.15rem; border-bottom: 1px solid var(--linea); }
+.resumen-voto .fila:last-child { border-bottom: 0; }
+.resumen-voto .rotulo { font-size: .82rem; color: var(--tinta-suave); font-weight: 500; }
+.resumen-voto .valor { font-family: "Raleway", sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--tinta); }
+
+.exito-portada {
+  background: linear-gradient(160deg, #2A0B06 0%, #000 100%);
+  color: var(--blanco); padding: 2.4rem 0;
+}
+.exito-portada h1 { color: var(--blanco); }
+.sello { width: 72px; height: 72px; border-radius: 50%; background: var(--dorado); display: grid; place-items: center; margin-bottom: 1rem; }
+.comprobante {
+  font-weight: 700; font-size: 1.5rem; letter-spacing: .06em;
+  background: var(--gris-fondo); border: 1px dashed #BDBDBD; border-radius: var(--radio-s);
+  padding: .6rem .9rem; display: inline-block;
+}
+
+/* Aviso de regla pendiente */
+.nota-pendiente {
+  background: var(--pendiente-fondo);
+  border: 1px solid var(--pendiente-borde);
+  border-radius: var(--radio-s);
+  padding: .8rem 1rem; font-size: .93rem; color: var(--pendiente-texto);
+}
+.nota-pendiente strong { color: #4D3900; }
+
+/* Reglas de la votación */
+.reglas { list-style: none; padding: 0; margin: 0; }
+.reglas li { display: flex; flex-wrap: wrap; gap: .4rem .7rem; align-items: baseline; padding: .7rem 0; border-bottom: 1px solid var(--linea); }
+.reglas li:last-child { border-bottom: 0; }
+
+/* Imagen de la votación */
+.imagen-votacion .escena { aspect-ratio: 16 / 9; height: auto; border-radius: var(--radio-m); box-shadow: var(--sombra); }
+.imagen-votacion figcaption { font-size: .82rem; color: var(--tinta-suave); margin-top: .55rem; }
+
+/* ---------- Pie negro, como el sitio oficial ---------- */
+.pie { background: var(--negro); color: rgba(255, 255, 255, .75); padding: 2.2rem 0 1.3rem; font-size: .9rem; }
+.pie a { color: var(--blanco); text-decoration: none; }
+.pie a:hover { color: var(--dorado); }
+.pie .marca, .pie .marca:hover { color: var(--blanco); }
+.pie .marca-texto span { color: rgba(255, 255, 255, .65); }
+.pie-principal {
+  display: flex; flex-direction: column; gap: 1.2rem;
+  padding-bottom: 1.5rem; margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .14);
+}
+.pie-enlaces { display: flex; flex-wrap: wrap; gap: .2rem 1.4rem; }
+.pie-enlaces a { padding: .45rem 0; font-weight: 500; }
+/* Línea de trazabilidad para el docente: código de pantalla, caso de uso y mapa */
+.pie-ficha { display: flex; flex-direction: column; gap: .25rem; font-size: .78rem; color: rgba(255, 255, 255, .55); }
+.pie-ficha strong { color: rgba(255, 255, 255, .85); font-weight: 600; }
+.pie-ficha a { color: rgba(255, 255, 255, .8); text-decoration: underline; }
+.pie-admin { padding: 1rem 0; }
+
+/* =========================================================
+   Administración
+   ========================================================= */
+.admin-body { background: var(--gris-fondo); }
+.admin-encabezado { background: var(--negro); color: var(--blanco); }
+.admin-encabezado .marca, .admin-encabezado .marca:hover { color: var(--blanco); }
+.admin-encabezado .marca-texto span { color: rgba(255, 255, 255, .7); }
+.selector-edicion { background-color: rgba(255, 255, 255, .1); color: var(--blanco); border: 1px solid rgba(255, 255, 255, .3); min-height: 40px; font-weight: 500; }
+.selector-edicion option { color: var(--tinta); }
+
+.admin-menu {
+  display: flex; gap: .3rem; overflow-x: auto;
+  background: var(--blanco); border-bottom: 1px solid var(--linea);
+  padding: .4rem .75rem;
+}
+.admin-menu a {
+  flex: none; padding: .6rem .9rem; border-radius: var(--radio-s);
+  color: var(--tinta); text-decoration: none; font-weight: 500; min-height: 44px;
+  display: inline-flex; align-items: center;
+}
+.admin-menu a:hover { background: var(--gris-fondo); color: var(--rojo); }
+.admin-menu a.activo { background: var(--rojo); color: var(--blanco); }
+
+.admin-titulo { display: flex; flex-wrap: wrap; gap: .8rem 1rem; align-items: end; justify-content: space-between; margin: 1.6rem 0 1.2rem; }
+.admin-titulo h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); margin: 0; }
+
+.panel { background: var(--blanco); border: 1px solid var(--linea); border-radius: var(--radio-m); padding: 1.2rem; box-shadow: var(--sombra); }
+.panel h2 { font-size: 1.3rem; margin-bottom: .8rem; }
+
+.tabla-admin { margin: 0; }
+.tabla-admin th { font-size: .8rem; color: var(--tinta-suave); font-weight: 600; border-bottom-width: 2px; white-space: nowrap; }
+.tabla-admin td { vertical-align: middle; }
+.tabla-admin .acciones { white-space: nowrap; text-align: right; }
+.table-responsive, .admin-menu { position: relative; } /* contiene los textos ocultos para lectores de pantalla */
+
+.resumen-admin { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
+.resumen-admin .dato { border: 1px solid var(--linea); border-radius: var(--radio-s); padding: .8rem .9rem; background: var(--blanco); }
+.resumen-admin .dato b { display: block; font-family: "Raleway", sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--rojo); line-height: 1.1; }
+.resumen-admin .dato span { font-size: .86rem; color: var(--tinta-suave); }
+
+/* Resultados en barras */
+.resultado { margin-bottom: 1rem; }
+.resultado .cabeza { display: flex; justify-content: space-between; gap: 1rem; font-weight: 600; margin-bottom: .3rem; }
+.resultado .pista { height: 14px; background: var(--gris-fondo); border-radius: 999px; overflow: hidden; }
+.resultado .barra { height: 100%; background: var(--granate); border-radius: 999px; }
+.resultado.lider .barra { background: var(--rojo); }
+
+/* ---------- Tablet ---------- */
+@media (min-width: 768px) {
+  .seccion { padding: 3.4rem 0; }
+  .portada { padding: 3.6rem 0 3.8rem; }
+  .pasos { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .resumen-admin { grid-template-columns: repeat(4, 1fr); }
+  .barra-accion { position: static; border-top: 0; padding: 0; }
+  .cuenta-cajas { gap: 3rem; }
+  .pie-principal { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  .pie-enlaces { max-width: 32rem; justify-content: flex-end; }
+  .pie-ficha { flex-direction: row; justify-content: space-between; gap: 1rem; }
+}
+
+/* ---------- Computador ---------- */
+@media (min-width: 992px) {
+  .encabezado .nav-link { padding: 1rem .2rem; margin: 0 .7rem; }
+  .trilogia { grid-template-columns: 1.3fr 1fr; grid-template-rows: auto auto; padding: 1.6rem; gap: 1.2rem; }
+  .trilogia-item:first-child { grid-row: span 2; }
+  .trilogia-item:first-child .ilustracion { width: 120px; height: 120px; }
+  .trilogia-item .ilustracion { width: 88px; height: 88px; }
+  .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
+  .admin-menu { flex-direction: column; overflow: visible; border-bottom: 0; border-right: 1px solid var(--linea); padding: 1.2rem .8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* Formularios de administración: ancho cómodo de lectura cuando quedan debajo de la tabla */
+.panel form[data-demo] { max-width: 44rem; }
+
+/* Recuadro de atajos para el docente (UI-03): alto según su contenido */
+.atajos { height: auto; border-style: dashed; }
+
+/* ---------- Interfaz pública con datos de MySQL (Entrega 2) ---------- */
+.ficha-imagen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ficha-imagen-vacia {
+  display: grid; place-items: center;
+  background: linear-gradient(160deg, var(--rojo) 0%, var(--granate) 100%);
+  color: var(--dorado);
+}
+.cat-inicial { font-family: "Raleway", sans-serif; font-weight: 800; font-size: 3.2rem; line-height: 1; }
+.imagen-votacion .ficha-imagen-vacia { border-radius: var(--radio-m); }
+.opciones-lista .opcion { cursor: default; }
+img.miniatura { object-fit: cover; }
