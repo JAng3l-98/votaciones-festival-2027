@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+<section class="portada">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        {% if edicion %}
+          <span class="edicion">{% if edicion.numero %}Edición {{ edicion.numero }} · {% endif %}{{ edicion.anio }}</span>
+        {% endif %}
+        <h1>Tu voto también hace el Festival</h1>
+        <p class="lead mt-3">Elige a tus favoritos en las votaciones del público. Te registras una vez y votas desde el celular en pocos pasos.</p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a class="btn btn-primary" href="{% url 'votaciones:lista' %}">Ver votaciones</a>
+          {% if not user.is_authenticated %}<a class="btn btn-claro" href="{% url 'cuentas:registro' %}">Crear cuenta</a>{% endif %}
+        </div>
+      </div>
+      <div class="col-lg-5">{% include "includes/trilogia.html" %}</div>
+    </div>
+  </div>
+</section>
+
+{% if edicion.fecha_inicio %}
+<section class="cuenta-banda" id="cuenta-regresiva" data-fecha="{{ edicion.fecha_inicio|date:'Y-m-d' }}T00:00:00-05:00">
+  <div class="container">
+    <p class="cuenta-titulo">Faltan para el {{ edicion.nombre }}</p>
+    <div class="cuenta-cajas">
+      <div><b data-unidad="dias">--</b><span>Días</span></div>
+      <div><b data-unidad="horas">--</b><span>Horas</span></div>
+      <div><b data-unidad="minutos">--</b><span>Minutos</span></div>
+      <div><b data-unidad="segundos">--</b><span>Segundos</span></div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="seccion">
+  <div class="container">
+    {% if edicion %}
+      <h2>{{ edicion.nombre }}</h2>
+      <p class="lead">En esta edición hay {{ total_categorias }} categoría{{ total_categorias|pluralize }} y {{ total_votaciones }} votaci{{ total_votaciones|pluralize:"ón,ones" }} configurada{{ total_votaciones|pluralize }}.</p>
+    {% else %}
+      <h2>Aún no hay ediciones</h2>
+      <p class="lead">Cuando la Fundación registre la primera edición en la administración, aparecerá aquí.</p>
+      {% if user.is_staff %}<a class="btn btn-primary" href="{% url 'admin:votaciones_edicion_add' %}">Crear la primera edición</a>{% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% if abiertas %}
+<section class="seccion pt-0">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+      <h2 class="m-0">Votaciones abiertas</h2>
+      <a class="fw-bold" href="{% url 'votaciones:lista' %}">Ver todas</a>
+    </div>
+    <div class="row g-3">
+      {% for votacion in abiertas %}{% include "votaciones/_tarjeta_votacion.html" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
