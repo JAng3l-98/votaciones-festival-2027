@@ -48,4 +48,4 @@ class CargarDatosPruebaTests(TestCase):
         )
 
         self.assertEqual(cantidades_primera, cantidades_segunda)
-        self.assertIn("La edicion ya existia.", salida_segunda)
+        self.assertIn("Datos de prueba listos", salida_segunda)
