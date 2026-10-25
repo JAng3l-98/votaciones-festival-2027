@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block titulo %}Votaciones{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <h1 class="m-0">Votaciones{% if categoria_actual %}: {{ categoria_actual.nombre }}{% endif %}</h1>
+
+    {% if edicion %}
+      <nav class="filtros mt-4 mb-4" aria-label="Filtrar por categoría">
+        <a class="filtro{% if not categoria_actual %} activo{% endif %}" href="{% url 'votaciones:lista' %}">Todas</a>
+        {% for categoria in categorias %}
+          <a class="filtro{% if categoria == categoria_actual %} activo{% endif %}" href="?categoria={{ categoria.slug }}">{{ categoria.nombre }}</a>
+        {% endfor %}
+      </nav>
+
+      {% if abiertas %}
+        <h2 class="h3 mb-3">Abiertas</h2>
+        <div class="row g-3 mb-5">
+          {% for votacion in abiertas %}{% include "votaciones/_tarjeta_votacion.html" %}{% endfor %}
+        </div>
+      {% endif %}
+
+      {% if proximas %}
+        <h2 class="h3 mb-3">Próximamente</h2>
+        <div class="row g-3 mb-5">
+          {% for votacion in proximas %}{% include "votaciones/_tarjeta_votacion.html" %}{% endfor %}
+        </div>
+      {% endif %}
+
+      {% if cerradas %}
+        <h2 class="h3 mb-3">Cerradas</h2>
+        <div class="row g-3">
+          {% for votacion in cerradas %}{% include "votaciones/_tarjeta_votacion.html" %}{% endfor %}
+        </div>
+      {% endif %}
+
+      {% if not abiertas and not proximas and not cerradas %}
+        <p class="lead">No hay votaciones publicadas{% if categoria_actual %} en esta categoría{% endif %}.</p>
+      {% endif %}
+    {% else %}
+      <p class="lead mt-2">Aún no hay ediciones registradas.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
