@@ -7,12 +7,26 @@
   <div class="container">
     <div class="row justify-content-center"><div class="col-md-8 col-lg-5">
       <h1>Ingresa para votar</h1>
-      <form method="post" class="mt-4">
+      <p class="lead mt-2">Usa el correo con el que te registraste.</p>
+
+      <form method="post" class="mt-4" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">El correo o la contraseña no son correctos. Revisa los datos e inténtalo de nuevo.</div>
+        {% endif %}
+
+        {% for campo in form %}
+          <div class="mb-3">
+            <label class="form-label" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+            {{ campo }}
+            {% for error in campo.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+          </div>
+        {% endfor %}
+
         <input type="hidden" name="next" value="{{ next }}">
-        <button class="btn btn-primary w-100" type="submit">Ingresar</button>
+        <button class="btn btn-primary w-100 mt-2" type="submit">Ingresar</button>
       </form>
+      <p class="mt-4">¿No tienes cuenta? <a class="fw-bold" href="{% url 'cuentas:registro' %}">Crear cuenta</a></p>
     </div></div>
   </div>
 </section>

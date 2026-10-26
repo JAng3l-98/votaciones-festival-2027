@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block titulo %}Crear cuenta{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center"><div class="col-md-8 col-lg-6">
+      <h1>Crea tu cuenta</h1>
+      <p class="lead mt-2">La necesitas para votar. Puedes ver las votaciones sin cuenta.</p>
+
+      <form method="post" class="mt-4" novalidate>
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}<div class="alert alert-danger">{{ error }}</div>{% endfor %}
+
+        {% for campo in form %}
+          {% if campo.name == "acepta_tratamiento_datos" %}
+            <div class="form-check mb-4">
+              {{ campo }}
+              <label class="form-check-label" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+              {% for error in campo.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+          {% else %}
+            <div class="mb-3">
+              <label class="form-label" for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+              {{ campo }}
+              {% if campo.help_text %}<div class="form-text">{{ campo.help_text }}</div>{% endif %}
+              {% for error in campo.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <button class="btn btn-primary w-100" type="submit">Crear cuenta</button>
+      </form>
+      <p class="mt-4">¿Ya tienes cuenta? <a class="fw-bold" href="{% url 'cuentas:login' %}">Ingresar</a></p>
+    </div></div>
+  </div>
+</section>
+{% endblock %}
