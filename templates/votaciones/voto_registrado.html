@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block titulo %}Voto registrado{% endblock %}
+
+{% block contenido %}
+{# Página provisional de la Entrega 3 (Juan). Liana la reemplaza por el diseño del prototipo. #}
+<section class="seccion">
+  <div class="container">
+    <h1>Tu voto quedó registrado</h1>
+    <p>Votaste por <strong>{{ voto.opcion.nombre }}</strong> en {{ voto.votacion.nombre }} ({{ voto.categoria.nombre }}).</p>
+    <p>Comprobante: <strong>{{ voto.comprobante }}</strong> · {{ voto.fecha|date:"j \d\e F \d\e Y, g:i a" }}</p>
+    <a class="btn btn-primary" href="{% url 'votaciones:lista' %}">Ver otras votaciones</a>
+  </div>
+</section>
+{% endblock %}

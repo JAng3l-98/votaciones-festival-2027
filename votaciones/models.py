@@ -1,10 +1,16 @@
 """
-Modelos del sistema de votaciones: Edición → Categoría → Votación → Opción.
+Modelos del sistema de votaciones: Edición → Categoría → Votación → Opción, y el Voto.
 
 Todo es configurable desde la administración: no hay categorías, votaciones ni reglas
-fijas en el código. Las reglas que la Fundación aún no define (votos por persona,
-publicación de resultados) son campos de cada votación.
+fijas en el código. La regla central de la Entrega 3 (un voto por usuario, categoría y
+edición) es la regla por defecto de cada categoría; el administrador puede cambiarla por
+«un voto en cada votación de la categoría». La base de datos garantiza la regla elegida
+con una restricción única en el modelo Voto.
 """
+import secrets
+
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import F, Q
 from django.urls import reverse
@@ -67,12 +73,24 @@ class Edicion(Fechas):
 # ---------------------------------------------------------------- Categoría
 class Categoria(Fechas):
     """Agrupa votaciones dentro de una edición: Música, Desfile y comparsas, Piloneras…"""
+
+    class ReglaVoto(models.TextChoices):
+        # Regla de la guía de la Entrega 3: una sola opción en toda la categoría, aunque tenga
+        # varias votaciones (subeventos). Es la regla por defecto.
+        UNO_POR_CATEGORIA = "categoria", "Un solo voto en toda la categoría"
+        # Regla alternativa configurable: un voto en cada votación de la categoría.
+        UNO_POR_VOTACION = "votacion", "Un voto en cada votación de la categoría"
+
     edicion = models.ForeignKey(Edicion, on_delete=models.PROTECT, related_name="categorias", verbose_name="edición")
     nombre = models.CharField("nombre", max_length=120)
     slug = models.SlugField("identificador en la URL", max_length=140)
     descripcion = models.TextField("descripción", blank=True)
     orden = models.PositiveSmallIntegerField("orden en el sitio", default=0)
     visible = models.BooleanField("visible para el público", default=True)
+    regla_voto = models.CharField(
+        "regla de votos", max_length=12, choices=ReglaVoto.choices, default=ReglaVoto.UNO_POR_CATEGORIA,
+        help_text="Un solo voto en toda la categoría (regla de la Entrega 3) o un voto en cada una de sus votaciones. "
+                  "No se puede cambiar cuando la categoría ya tiene votos.")
 
     class Meta:
         verbose_name = "categoría"
@@ -85,6 +103,17 @@ class Categoria(Fechas):
 
     def __str__(self):
         return f"{self.nombre} ({self.edicion.anio})"
+
+    @property
+    def un_voto_por_categoria(self):
+        return self.regla_voto == self.ReglaVoto.UNO_POR_CATEGORIA
+
+    def clean(self):
+        # Cambiar la regla con votos ya registrados dejaría votos que no la cumplen.
+        if self.pk:
+            anterior = Categoria.objects.filter(pk=self.pk).values_list("regla_voto", flat=True).first()
+            if anterior and anterior != self.regla_voto and self.votos.exists():
+                raise ValidationError({"regla_voto": "Esta categoría ya tiene votos: su regla de votos no se puede cambiar."})
 
 
 # ---------------------------------------------------------------- Votación
@@ -126,10 +155,8 @@ class Votacion(Fechas):
     imagen = models.ImageField("imagen", upload_to="votaciones/", blank=True)
     fecha_apertura = models.DateTimeField("abre")
     fecha_cierre = models.DateTimeField("cierra")
-    # Reglas configurables por votación (pendientes de validación con la Fundación)
-    votos_por_usuario = models.PositiveSmallIntegerField(
-        "votos por usuario", default=1,
-        help_text="Cuántas veces puede votar cada usuario en esta votación (regla configurable).")
+    # Reglas configurables por votación (pendientes de validación con la Fundación).
+    # El número de votos ya no es configurable: la Entrega 3 fija un voto por categoría (ver Voto).
     publicacion_resultados = models.CharField(
         "publicación de resultados", max_length=20, choices=Publicacion.choices, default=Publicacion.AL_CIERRE)
     es_prueba = models.BooleanField(
@@ -149,8 +176,6 @@ class Votacion(Fechas):
                                     violation_error_message="Ya existe una votación con ese identificador en esta categoría."),
             models.CheckConstraint(condition=Q(fecha_cierre__gt=F("fecha_apertura")), name="votacion_cierre_despues_de_apertura",
                                    violation_error_message="La fecha de cierre debe ser posterior a la de apertura."),
-            models.CheckConstraint(condition=Q(votos_por_usuario__gte=1), name="votacion_al_menos_un_voto",
-                                   violation_error_message="Cada usuario debe poder votar al menos una vez."),
         ]
 
     def __str__(self):
@@ -197,3 +222,60 @@ class Opcion(Fechas):
 
     def __str__(self):
         return self.nombre
+
+
+# ---------------------------------------------------------------- Voto
+ALFABETO_COMPROBANTE = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"   # sin 0, O, 1 ni I, que se confunden
+
+
+def nuevo_comprobante(anio):
+    """Código que el usuario guarda como constancia de su voto, por ejemplo «VF27-4K9P-2QXM»."""
+    cuerpo = "".join(secrets.choice(ALFABETO_COMPROBANTE) for _ in range(8))
+    return f"VF{anio % 100:02d}-{cuerpo[:4]}-{cuerpo[4:]}"
+
+
+class Voto(models.Model):
+    """
+    El voto de un usuario. Regla central de la Entrega 3: una sola opción por usuario,
+    categoría y edición. Se puede votar en otras categorías, pero no dos veces en la
+    misma, aunque la categoría tenga varias votaciones (subeventos). Si el administrador
+    configura la categoría con «un voto en cada votación», el límite pasa a ser uno por votación.
+    """
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="votos", verbose_name="usuario")
+    # La edición y la categoría se guardan también en el voto para que MySQL pueda exigir
+    # la restricción única: una restricción no puede consultar otras tablas.
+    edicion = models.ForeignKey(Edicion, on_delete=models.PROTECT, related_name="votos", verbose_name="edición")
+    categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="votos", verbose_name="categoría")
+    votacion = models.ForeignKey(Votacion, on_delete=models.PROTECT, related_name="votos", verbose_name="votación")
+    opcion = models.ForeignKey(Opcion, on_delete=models.PROTECT, related_name="votos", verbose_name="opción")
+    # Alcance de la regla de la categoría: 0 cuando el voto ocupa toda la categoría (regla por
+    # defecto) o el id de la votación cuando la categoría permite un voto en cada votación.
+    alcance = models.PositiveBigIntegerField("alcance de la regla", default=0, editable=False)
+    comprobante = models.CharField("comprobante", max_length=16, unique=True, editable=False)
+    fecha = models.DateTimeField("fecha del voto", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "voto"
+        verbose_name_plural = "votos"
+        ordering = ["-fecha"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario", "edicion", "categoria", "alcance"], name="voto_unico_usuario_categoria_edicion",
+                violation_error_message="Este usuario ya votó en esta categoría de la edición."),
+        ]
+
+    def __str__(self):
+        return f"{self.usuario} · {self.categoria.nombre}: {self.opcion}"
+
+    def save(self, *args, **kwargs):
+        # La votación, la categoría y la edición se toman de la opción elegida:
+        # así un voto nunca puede quedar con datos que no coinciden entre sí.
+        self.votacion = self.opcion.votacion
+        self.categoria = self.votacion.categoria
+        self.edicion = self.categoria.edicion
+        # Con la regla por defecto todos los votos de la categoría tienen alcance 0, así que la
+        # restricción única deja uno solo por usuario, categoría y edición.
+        self.alcance = 0 if self.categoria.un_voto_por_categoria else self.votacion_id
+        if not self.comprobante:
+            self.comprobante = nuevo_comprobante(self.edicion.anio)
+        super().save(*args, **kwargs)

@@ -56,7 +56,7 @@ class VotacionAdmin(admin.ModelAdmin):
         ("Datos de la votación", {"fields": ("categoria", "nombre", "slug", "descripcion", "imagen", "orden", "visible")}),
         ("Fechas", {"fields": ("fecha_apertura", "fecha_cierre")}),
         ("Reglas configurables (pendientes de validación con la Fundación)", {
-            "fields": ("votos_por_usuario", "publicacion_resultados", "es_prueba"),
+            "fields": ("publicacion_resultados", "es_prueba"),
         }),
     )
 
