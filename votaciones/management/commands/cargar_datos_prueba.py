@@ -69,7 +69,9 @@ class Command(BaseCommand):
         for orden, (slug, nombre, descripcion) in enumerate(CATEGORIAS, start=1):
             categorias[slug], _ = Categoria.objects.update_or_create(
                 edicion=edicion, slug=slug,
-                defaults={"nombre": nombre, "descripcion": descripcion, "orden": orden, "visible": True},
+                # Todas con la regla de la guía: un solo voto en toda la categoría.
+                defaults={"nombre": nombre, "descripcion": descripcion, "orden": orden, "visible": True,
+                          "regla_voto": Categoria.ReglaVoto.UNO_POR_CATEGORIA},
             )
 
         total_opciones = 0
@@ -81,7 +83,6 @@ class Command(BaseCommand):
                     "descripcion": f"Elige tu favorito en «{nombre}». Datos de prueba.",
                     "fecha_apertura": fecha(apertura),
                     "fecha_cierre": fecha(cierre),
-                    "votos_por_usuario": 1,
                     "publicacion_resultados": publicacion,
                     "es_prueba": prueba,
                     "visible": visible,

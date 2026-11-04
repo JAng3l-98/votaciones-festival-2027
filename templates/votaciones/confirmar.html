@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %}Confirma tu voto{% endblock %}
+
+{% block contenido %}
+{# Página provisional de la Entrega 3 (Juan). Liana la reemplaza por el diseño del prototipo. #}
+<section class="seccion">
+  <div class="container">
+    <h1>Revisa tu voto</h1>
+    <p>Votación: <strong>{{ votacion.nombre }}</strong> ({{ votacion.categoria.nombre }})</p>
+    <p>Tu elección: <strong>{{ opcion.nombre }}</strong></p>
+    <form method="post" action="{% url 'votaciones:votar' votacion.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="opcion" value="{{ opcion.pk }}">
+      <button class="btn btn-primary" type="submit">Confirmar voto</button>
+      <a class="btn btn-outline-dark" href="{{ votacion.get_absolute_url }}">Cambiar opción</a>
+    </form>
+  </div>
+</section>
+{% endblock %}
