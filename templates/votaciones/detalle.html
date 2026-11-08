@@ -11,6 +11,10 @@
       <span class="texto-suave">/ <a href="{% url 'votaciones:lista' %}?categoria={{ votacion.categoria.slug }}">{{ votacion.categoria.nombre }}</a></span>
     </nav>
 
+    {% if puede_votar and user.is_authenticated %}
+      <ol class="flujo-voto" aria-label="Pasos para votar"><li class="hecho">Votación</li><li class="actual" aria-current="step">Opción</li><li>Confirmación</li><li>Listo</li></ol>
+    {% endif %}
+
     <div class="row g-4">
       <div class="col-lg-7">
         <h1>{{ votacion.nombre }}</h1>
@@ -27,12 +31,13 @@
 
         <h2 class="h3 mt-4 mb-2">Reglas de esta votación</h2>
         <ul class="reglas">
-          <li>Necesitas una cuenta registrada para votar.</li>
+          <li>Necesitas una cuenta registrada e iniciar sesión para votar.</li>
           {% if votacion.categoria.un_voto_por_categoria %}
-            <li>Puedes elegir una sola opción en la categoría «{{ votacion.categoria.nombre }}» de esta edición, aunque tenga varias votaciones.</li>
+            <li>Eliges una sola opción en la categoría «{{ votacion.categoria.nombre }}» de esta edición, aunque tenga varias votaciones. Sí puedes votar en las demás categorías.</li>
           {% else %}
-            <li>En la categoría «{{ votacion.categoria.nombre }}» puedes votar una vez en cada votación.</li>
+            <li>En la categoría «{{ votacion.categoria.nombre }}» puedes votar una vez en cada una de sus votaciones.</li>
           {% endif %}
+          <li>Después de confirmar, el voto no se puede cambiar.</li>
           <li>Publicación de resultados: {{ votacion.get_publicacion_resultados_display|lower }}.
             <span class="etiqueta etiqueta-pendiente">Pendiente de validación</span></li>
         </ul>
@@ -50,53 +55,92 @@
       </div>
     </div>
 
-    <h2 class="h3 mt-5 mb-3">Opciones</h2>
-    <div class="row g-3 opciones-lista">
-      {% for opcion in opciones %}
-        <div class="col-md-6">
-          <div class="opcion">
-            <div class="cuerpo">
-              {% if opcion.imagen %}
-                <img class="miniatura" src="{{ opcion.imagen.url }}" alt="">
-              {% else %}
-                <span class="miniatura" aria-hidden="true">{{ opcion.nombre|first|upper }}</span>
-              {% endif %}
-              <div>
-                <strong>{{ opcion.nombre }}</strong>
-                {% if opcion.descripcion %}<div class="texto-suave small">{{ opcion.descripcion }}</div>{% endif %}
+    {# Situación del usuario frente a esta votación #}
+    {% if voto_usuario %}
+      <div class="aviso-voto aviso-voto-hecho mt-4" role="status">
+        {% if votacion.categoria.un_voto_por_categoria %}
+          <strong>Ya votaste en la categoría «{{ votacion.categoria.nombre }}».</strong>
+          Elegiste <strong>{{ voto_usuario.opcion.nombre }}</strong> en «{{ voto_usuario.votacion.nombre }}». En esta categoría se permite un solo voto.
+        {% else %}
+          <strong>Ya votaste en esta votación.</strong>
+          Elegiste <strong>{{ voto_usuario.opcion.nombre }}</strong>. Puedes votar en las demás votaciones de «{{ votacion.categoria.nombre }}».
+        {% endif %}
+        <a href="{% url 'votaciones:voto_registrado' voto_usuario.comprobante %}">Ver mi comprobante</a>
+      </div>
+    {% elif estado == "proxima" %}
+      <div class="aviso-voto mt-4">Esta votación todavía no está abierta. Podrás votar desde el {{ votacion.fecha_apertura|date:"j \d\e F, g:i a"|lower }}.</div>
+    {% elif estado == "cerrada" %}
+      <div class="aviso-voto mt-4">Esta votación ya cerró y no recibe más votos.</div>
+    {% elif not user.is_authenticated %}
+      <div class="aviso-voto mt-4"><strong>Ingresa para votar.</strong> Puedes ver las opciones sin cuenta, pero para votar debes iniciar sesión.</div>
+    {% endif %}
+
+    {% if puede_votar and user.is_authenticated and opciones %}
+      {# Paso 1 del voto: elegir. El formulario va por POST con el token CSRF; todavía no guarda nada. #}
+      <h2 class="h3 mt-5 mb-3">Elige una opción</h2>
+      <form method="post" action="{% url 'votaciones:confirmar' votacion.pk %}">
+        {% csrf_token %}
+        <fieldset class="row g-3">
+          <legend class="visually-hidden">Opciones de la votación</legend>
+          {% for opcion in opciones %}
+            <div class="col-md-6">
+              <label class="opcion">
+                <input type="radio" name="opcion" value="{{ opcion.pk }}" required>
+                <span class="cuerpo">
+                  {% if opcion.imagen %}
+                    <img class="miniatura" src="{{ opcion.imagen.url }}" alt="">
+                  {% else %}
+                    <span class="miniatura" aria-hidden="true">{{ opcion.nombre|first|upper }}</span>
+                  {% endif %}
+                  <span><strong class="d-block">{{ opcion.nombre }}</strong>{% if opcion.descripcion %}<span class="texto-suave small">{{ opcion.descripcion }}</span>{% endif %}</span>
+                  <span class="marca-sel" aria-hidden="true"></span>
+                </span>
+              </label>
+            </div>
+          {% endfor %}
+        </fieldset>
+        <div class="barra-accion">
+          <p class="texto-suave mb-2">Marca una sola opción y pulsa «Continuar». En el siguiente paso confirmas tu voto.</p>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary flex-grow-1 flex-sm-grow-0" type="submit">Continuar</button>
+            <a class="btn btn-outline-dark" href="{% url 'votaciones:lista' %}">Volver</a>
+          </div>
+        </div>
+      </form>
+    {% else %}
+      <h2 class="h3 mt-5 mb-3">Opciones</h2>
+      <div class="row g-3 opciones-lista">
+        {% for opcion in opciones %}
+          <div class="col-md-6">
+            <div class="opcion">
+              <div class="cuerpo">
+                {% if opcion.imagen %}
+                  <img class="miniatura" src="{{ opcion.imagen.url }}" alt="">
+                {% else %}
+                  <span class="miniatura" aria-hidden="true">{{ opcion.nombre|first|upper }}</span>
+                {% endif %}
+                <div>
+                  <strong>{{ opcion.nombre }}</strong>
+                  {% if opcion.descripcion %}<div class="texto-suave small">{{ opcion.descripcion }}</div>{% endif %}
+                </div>
               </div>
             </div>
           </div>
+        {% empty %}
+          <div class="col-12"><p>Esta votación aún no tiene opciones.</p></div>
+        {% endfor %}
+      </div>
+      <div class="barra-accion">
+        <div class="d-flex gap-2">
+          {% if estado == "abierta" and not user.is_authenticated %}
+            <a class="btn btn-primary flex-grow-1 flex-sm-grow-0" href="{% url 'cuentas:login' %}?next={{ request.path|urlencode }}">Ingresar para votar</a>
+          {% endif %}
+          <a class="btn btn-outline-dark" href="{% url 'votaciones:lista' %}">Volver a las votaciones</a>
         </div>
-      {% empty %}
-        <div class="col-12"><p>Esta votación aún no tiene opciones.</p></div>
-      {% endfor %}
-    </div>
-
-    {# Formulario provisional de la Entrega 3 (Juan). Liana lo reemplaza por el diseño del prototipo. #}
-    <div class="mt-4">
-      {% if voto_usuario %}
-        <div class="alert alert-info">Ya votaste {% if votacion.categoria.un_voto_por_categoria %}en esta categoría{% else %}en esta votación{% endif %} por <strong>{{ voto_usuario.opcion.nombre }}</strong> ({{ voto_usuario.votacion.nombre }}).</div>
-      {% elif estado != "abierta" %}
-        <div class="alert alert-secondary">Esta votación no está abierta, así que no recibe votos.</div>
-      {% elif not user.is_authenticated %}
-        <a class="btn btn-primary" href="{% url 'cuentas:login' %}?next={{ request.path|urlencode }}">Ingresa para votar</a>
-      {% elif opciones %}
-        <form method="post" action="{% url 'votaciones:confirmar' votacion.pk %}">
-          {% csrf_token %}
-          {% for opcion in opciones %}
-            <div class="form-check"><input class="form-check-input" type="radio" name="opcion" id="opcion-{{ opcion.pk }}" value="{{ opcion.pk }}" required>
-              <label class="form-check-label" for="opcion-{{ opcion.pk }}">{{ opcion.nombre }}</label></div>
-          {% endfor %}
-          <button class="btn btn-primary mt-3" type="submit">Continuar</button>
-        </form>
-      {% endif %}
-    </div>
-
-    <div class="barra-accion">
-      <a class="btn btn-outline-dark" href="{% url 'votaciones:lista' %}">Volver a las votaciones</a>
-    </div>
+      </div>
+    {% endif %}
   </div>
 </section>
 {% endwith %}
 {% endblock %}
+

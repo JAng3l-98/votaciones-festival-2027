@@ -3,13 +3,37 @@
 {% block titulo %}Voto registrado{% endblock %}
 
 {% block contenido %}
-{# Página provisional de la Entrega 3 (Juan). Liana la reemplaza por el diseño del prototipo. #}
+<section class="exito-portada">
+  <div class="container">
+    <div class="sello" aria-hidden="true"><svg width="38" height="38" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#1F2A27" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1>Tu voto quedó registrado</h1>
+    <p class="lead mt-3">Votaste por <strong>{{ voto.opcion.nombre }}</strong> en {{ voto.votacion.nombre }}.</p>
+  </div>
+</section>
+<div class="fuelle-rojo" aria-hidden="true"></div>
+
 <section class="seccion">
   <div class="container">
-    <h1>Tu voto quedó registrado</h1>
-    <p>Votaste por <strong>{{ voto.opcion.nombre }}</strong> en {{ voto.votacion.nombre }} ({{ voto.categoria.nombre }}).</p>
-    <p>Comprobante: <strong>{{ voto.comprobante }}</strong> · {{ voto.fecha|date:"j \d\e F \d\e Y, g:i a" }}</p>
-    <a class="btn btn-primary" href="{% url 'votaciones:lista' %}">Ver otras votaciones</a>
+    <div class="row g-4"><div class="col-lg-7">
+      <h2 class="h3">Tu comprobante</h2>
+      <p class="comprobante my-2">{{ voto.comprobante }}</p>
+      <p class="texto-suave">Guárdalo: sirve para cualquier consulta sobre tu voto.</p>
+
+      <div class="resumen-voto my-4">
+        <div class="fila"><div class="rotulo">Categoría</div><div class="valor">{{ voto.categoria.nombre }}</div></div>
+        <div class="fila"><div class="rotulo">Votación</div><div>{{ voto.votacion.nombre }}</div></div>
+        <div class="fila"><div class="rotulo">Tu elección</div><div class="valor">{{ voto.opcion.nombre }}</div></div>
+        <div class="fila"><div class="rotulo">Fecha y hora</div><div>{{ voto.fecha|date:"j \d\e F \d\e Y, g:i a"|lower }}</div></div>
+      </div>
+
+      <h2 class="h3 mt-4">¿Cuándo salen los resultados?</h2>
+      <p class="mt-2">{{ voto.votacion.get_publicacion_resultados_display }}. <span class="etiqueta etiqueta-pendiente">Pendiente de validación</span></p>
+
+      <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
+        <a class="btn btn-primary flex-grow-1 flex-sm-grow-0" href="{% url 'votaciones:lista' %}">Votar en otra categoría</a>
+        <a class="btn btn-outline-dark" href="{% url 'votaciones:inicio' %}">Inicio</a>
+      </div>
+    </div></div>
   </div>
 </section>
 {% endblock %}

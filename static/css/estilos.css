@@ -574,3 +574,11 @@ a.ficha-votacion:hover .ficha-imagen { filter: brightness(1.08); }
 .imagen-votacion .ficha-imagen-vacia { border-radius: var(--radio-m); }
 .opciones-lista .opcion { cursor: default; }
 img.miniatura { object-fit: cover; }
+.aviso-voto {
+  border: 1px solid var(--linea); border-left: 6px solid var(--tinta-suave);
+  border-radius: var(--radio-s); background: var(--gris-fondo);
+  padding: .9rem 1.1rem;
+}
+.aviso-voto-hecho { border-left-color: #1E7A4C; background: #EEF8F2; }
+.exito-portada .lead { color: rgba(255, 255, 255, .9); }
+.opcion img.miniatura { width: 64px; height: 64px; border-radius: 50%; }
