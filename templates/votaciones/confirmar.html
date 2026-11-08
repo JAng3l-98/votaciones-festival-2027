@@ -3,18 +3,35 @@
 {% block titulo %}Confirma tu voto{% endblock %}
 
 {% block contenido %}
-{# Página provisional de la Entrega 3 (Juan). Liana la reemplaza por el diseño del prototipo. #}
 <section class="seccion">
   <div class="container">
-    <h1>Revisa tu voto</h1>
-    <p>Votación: <strong>{{ votacion.nombre }}</strong> ({{ votacion.categoria.nombre }})</p>
-    <p>Tu elección: <strong>{{ opcion.nombre }}</strong></p>
-    <form method="post" action="{% url 'votaciones:votar' votacion.pk %}">
-      {% csrf_token %}
-      <input type="hidden" name="opcion" value="{{ opcion.pk }}">
-      <button class="btn btn-primary" type="submit">Confirmar voto</button>
-      <a class="btn btn-outline-dark" href="{{ votacion.get_absolute_url }}">Cambiar opción</a>
-    </form>
+    <ol class="flujo-voto" aria-label="Pasos para votar"><li class="hecho">Votación</li><li class="hecho">Opción</li><li class="actual" aria-current="step">Confirmación</li><li>Listo</li></ol>
+    <div class="row"><div class="col-lg-7">
+      <h1>Revisa tu voto</h1>
+      <p class="lead mt-2">Confirma solo si la opción es la que quieres.</p>
+
+      <div class="resumen-voto my-4">
+        <div class="fila"><div class="rotulo">Categoría</div><div class="valor">{{ votacion.categoria.nombre }}</div></div>
+        <div class="fila"><div class="rotulo">Votación</div><div>{{ votacion.nombre }}</div></div>
+        <div class="fila"><div class="rotulo">Tu elección</div><div class="valor">{{ opcion.nombre }}</div></div>
+        <div class="fila"><div class="rotulo">Votas como</div><div>{{ user.get_full_name|default:user.email }} ({{ user.email }})</div></div>
+      </div>
+
+      <div class="nota-pendiente mb-4"><strong>Importante:</strong> al confirmar ya no podrás cambiar tu elección
+        {% if votacion.categoria.un_voto_por_categoria %}ni votar otra vez en la categoría «{{ votacion.categoria.nombre }}». Sí podrás votar en las demás categorías.
+        {% else %}ni votar otra vez en «{{ votacion.nombre }}». Sí podrás votar en las demás votaciones de «{{ votacion.categoria.nombre }}».{% endif %}</div>
+
+      {# Paso 2 del voto: confirmar. Este formulario es el que guarda el voto en MySQL (POST + CSRF). #}
+      <form method="post" action="{% url 'votaciones:votar' votacion.pk %}" class="barra-accion">
+        {% csrf_token %}
+        <input type="hidden" name="opcion" value="{{ opcion.pk }}">
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary flex-grow-1 flex-sm-grow-0" type="submit">Confirmar voto</button>
+          <a class="btn btn-outline-dark" href="{{ votacion.get_absolute_url }}">Cambiar opción</a>
+        </div>
+      </form>
+    </div></div>
   </div>
 </section>
 {% endblock %}
+
