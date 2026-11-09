@@ -47,3 +47,7 @@ class MisVotosTests(TestCase):
         respuesta = self.client.get(self.url)
         self.assertNotContains(respuesta, voto_de_otro.comprobante)
         self.assertEqual(respuesta.context["votos"], [])
+
+    def test_cp04_el_ingreso_avisa_que_hay_que_iniciar_sesion_para_votar(self):
+        respuesta = self.client.get(f"{reverse('cuentas:login')}?next={self.cancion.get_absolute_url()}")
+        self.assertContains(respuesta, "Para votar debes iniciar sesión")
