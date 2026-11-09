@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from votaciones.models import Categoria, Edicion
+from votaciones.models import Categoria, Edicion, Votacion
+from votaciones.servicios import voto_que_bloquea
 
 from .forms import RegistroForm
 
@@ -35,9 +36,15 @@ def mis_votos(request):
                      .select_related("categoria", "votacion", "opcion"))
         categorias = list(Categoria.objects.filter(edicion=edicion, visible=True))
         votadas = {voto.categoria_id for voto in votos}
-        pendientes = [categoria for categoria in categorias if categoria.pk not in votadas]
+        # Categorías con al menos una votación abierta en la que todavía puede votar,
+        # según la regla de cada categoría (la misma función que usa el registro del voto).
+        abiertas = (Votacion.objects.de_edicion(edicion).visibles().abiertas()
+                    .select_related("categoria").order_by("categoria__orden", "orden"))
+        for votacion in abiertas:
+            if voto_que_bloquea(request.user, votacion) is None and votacion.categoria not in pendientes:
+                pendientes.append(votacion.categoria)
         total_categorias = len(categorias)
     contexto = {"edicion": edicion, "votos": votos, "pendientes": pendientes,
                 "total_categorias": total_categorias,
-                "categorias_votadas": total_categorias - len(pendientes)}
+                "categorias_votadas": len(votadas)}
     return render(request, "cuentas/mis_votos.html", contexto)
