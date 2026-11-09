@@ -27,6 +27,7 @@
             <li class="nav-item"><a class="nav-link{% if actual == 'lista' or actual == 'detalle' %} active" aria-current="page{% endif %}" href="{% url 'votaciones:lista' %}">Votaciones</a></li>
             {% if user.is_authenticated %}
               <li class="nav-item ms-lg-3 my-2 my-lg-0"><span class="usuario-chip"><span class="inicial" aria-hidden="true">{{ user.first_name|default:user.email|first|upper }}</span>{{ user.first_name|default:user.email }}</span></li>
+              <li class="nav-item"><a class="nav-link{% if actual == 'mis_votos' %} active" aria-current="page{% endif %}" href="{% url 'cuentas:mis_votos' %}">Mis votos</a></li>
               {% if user.is_staff %}<li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Administración</a></li>{% endif %}
               <li class="nav-item">
                 <form method="post" action="{% url 'cuentas:logout' %}" class="m-0">{% csrf_token %}

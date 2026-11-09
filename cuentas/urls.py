@@ -10,4 +10,5 @@ urlpatterns = [
     path("ingresar/", auth_views.LoginView.as_view(authentication_form=IngresoForm), name="login"),
     path("salir/", auth_views.LogoutView.as_view(), name="logout"),
     path("registro/", views.registro, name="registro"),
+    path("mis-votos/", views.mis_votos, name="mis_votos"),
 ]

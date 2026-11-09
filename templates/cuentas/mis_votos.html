@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block titulo %}Mis votos{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <h1 class="m-0">Mis votos</h1>
+    {% if edicion %}
+      <p class="lead mt-2 mb-4">{{ edicion.nombre }}. Has votado en {{ categorias_votadas }} de {{ total_categorias }} categoría{{ total_categorias|pluralize }}.</p>
+
+      <h2 class="h4 mb-3">Votos registrados</h2>
+      {% if votos %}
+        <div class="table-responsive">
+          <table class="table tabla-admin align-middle">
+            <thead>
+              <tr><th scope="col">Categoría</th><th scope="col">Votación</th><th scope="col">Tu opción</th><th scope="col">Fecha</th><th scope="col">Comprobante</th></tr>
+            </thead>
+            <tbody>
+              {% for voto in votos %}
+                <tr>
+                  <td>{{ voto.categoria.nombre }}</td>
+                  <td>{{ voto.votacion.nombre }}</td>
+                  <td><strong>{{ voto.opcion.nombre }}</strong></td>
+                  <td>{{ voto.fecha|date:"j/m/Y, g:i a" }}</td>
+                  <td><a href="{% url 'votaciones:voto_registrado' voto.comprobante %}">{{ voto.comprobante }}</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>Todavía no has votado en esta edición.</p>
+      {% endif %}
+
+      <h2 class="h4 mt-5 mb-3">Categorías donde aún puedes votar</h2>
+      {% if pendientes %}
+        <ul class="list-unstyled m-0">
+          {% for categoria in pendientes %}
+            <li class="mb-2"><a class="fw-bold" href="{% url 'votaciones:lista' %}?categoria={{ categoria.slug }}">{{ categoria.nombre }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>Ya votaste en todas las categorías de esta edición.</p>
+      {% endif %}
+    {% else %}
+      <p class="lead mt-2">Aún no hay ediciones registradas.</p>
+    {% endif %}
+    <a class="btn btn-primary mt-4" href="{% url 'votaciones:lista' %}">Ver votaciones</a>
+  </div>
+</section>
+{% endblock %}
