@@ -27,7 +27,8 @@
       </div>
 
       <h2 class="h3 mt-4">¿Cuándo salen los resultados?</h2>
-      <p class="mt-2">{{ voto.votacion.get_publicacion_resultados_display }}. <span class="etiqueta etiqueta-pendiente">Pendiente de validación</span></p>
+      <p class="mt-2">En esta votación los resultados {{ regla_resultados }}.
+        {% if acceso_resultados.permitido and not acceso_resultados.vista_previa %}<a class="fw-bold" href="{{ voto.votacion.get_resultados_url }}">Ver resultados</a>{% endif %}</p>
 
       <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
         <a class="btn btn-primary flex-grow-1 flex-sm-grow-0" href="{% url 'votaciones:lista' %}">Votar en otra categoría</a>

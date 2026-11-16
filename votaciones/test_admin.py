@@ -23,7 +23,7 @@ class AdministracionTests(TestCase):
         votacion = Votacion.objects.get(nombre="Canción favorita del público")
         respuesta = self.client.get(reverse("admin:votaciones_votacion_change", args=[votacion.pk]))
         self.assertContains(respuesta, "Brisa del Valle")
-        self.assertContains(respuesta, "Reglas configurables")
+        self.assertContains(respuesta, "Cuándo se publican los resultados")
 
     def test_busqueda_de_votaciones(self):
         respuesta = self.client.get(reverse("admin:votaciones_votacion_changelist"), {"q": "Comparsa"})

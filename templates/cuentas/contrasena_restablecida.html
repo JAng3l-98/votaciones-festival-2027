@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block titulo %}Contraseña actualizada{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center"><div class="col-md-8 col-lg-6">
+      <h1>Tu contraseña quedó actualizada</h1>
+      <div class="aviso-voto aviso-voto-hecho mt-3" role="status">Ya puedes ingresar con tu correo y la contraseña nueva.</div>
+      <a class="btn btn-primary mt-3" href="{% url 'cuentas:login' %}">Ingresar</a>
+    </div></div>
+  </div>
+</section>
+{% endblock %}

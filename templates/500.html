@@ -1,0 +1,22 @@
+{% load static %}<!doctype html>
+{# Página de error del servidor. No hereda de base.html: se muestra aunque falle la base de datos. #}
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error del servidor | Votaciones del Festival</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+  <main class="seccion">
+    <div class="container">
+      <p class="meta mb-1">Error 500</p>
+      <h1>Algo salió mal</h1>
+      <p class="lead mt-2">El sistema tuvo un problema al responder. Tu voto no se registra a medias: o queda guardado completo o no se guarda.</p>
+      <p>Vuelve a intentarlo en unos minutos y revisa en «Mis votos» si tu voto quedó registrado.</p>
+      <a class="btn btn-primary mt-2" href="/">Ir al inicio</a>
+    </div>
+  </main>
+</body>
+</html>

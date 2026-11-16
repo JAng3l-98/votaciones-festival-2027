@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block titulo %}Nueva contraseña{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center"><div class="col-md-8 col-lg-5">
+      {% if validlink %}
+        <h1>Crea una contraseña nueva</h1>
+        <p class="lead mt-2">Escríbela dos veces. Después ingresas con ella.</p>
+        <form method="post" class="mt-4" novalidate>
+          {% csrf_token %}
+          {% include "cuentas/_campos.html" %}
+          <button class="btn btn-primary w-100 mt-2" type="submit">Guardar contraseña</button>
+        </form>
+      {% else %}
+        <h1>El enlace ya no sirve</h1>
+        <div class="aviso-voto mt-3" role="status">
+          Este enlace venció o ya se usó. Pide uno nuevo para restablecer tu contraseña.
+        </div>
+        <a class="btn btn-primary mt-3" href="{% url 'cuentas:password_reset' %}">Pedir otro enlace</a>
+      {% endif %}
+    </div></div>
+  </div>
+</section>
+{% endblock %}

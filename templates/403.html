@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block titulo %}Acceso no permitido{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <p class="meta mb-1">Error 403</p>
+    <h1>No tienes permiso para ver esta página</h1>
+    <p class="lead mt-2">Esta sección es solo para la administración del Festival.</p>
+    <a class="btn btn-primary mt-3" href="{% url 'votaciones:inicio' %}">Ir al inicio</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block titulo %}Resultados{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <h1>Resultados</h1>
+    <p class="lead">
+      {% if edicion %}Votaciones del {{ edicion.nombre }}. Cada votación publica sus resultados según la regla que definió la Fundación: en vivo, al cierre o nunca.{% else %}Todavía no hay una edición registrada.{% endif %}
+    </p>
+
+    {% for grupo in grupos %}
+      <h2 class="h3 mt-4 mb-3">{{ grupo.categoria.nombre }}</h2>
+      <div class="row g-3">
+        {% for fila in grupo.filas %}
+          {% with votacion=fila.votacion acceso=fila.acceso estado=fila.votacion.estado %}
+          <div class="col-md-6 col-lg-4">
+            <div class="ficha h-100 d-flex flex-column">
+              <div class="d-flex justify-content-between gap-2">
+                <span class="meta">{% if acceso.permitido %}{{ votacion.total_votos }} voto{{ votacion.total_votos|pluralize }}{% else %}{{ votacion.get_publicacion_resultados_display }}{% endif %}</span>
+                <span class="etiqueta etiqueta-{% if estado == 'proxima' %}pronto{% else %}{{ estado }}{% endif %}">{{ votacion.get_estado_display }}</span>
+              </div>
+              <h3>{{ votacion.nombre }}</h3>
+              {% if acceso.permitido %}
+                <p class="meta flex-grow-1">{% if acceso.vista_previa %}Vista previa de la administración. {{ acceso.motivo }}{% else %}Resultados publicados{% if estado == "abierta" %} en vivo{% endif %}.{% endif %}</p>
+                <a class="btn btn-primary btn-sm align-self-start" href="{{ votacion.get_resultados_url }}">Ver resultados</a>
+              {% else %}
+                <p class="meta flex-grow-1">{{ acceso.motivo }}</p>
+                {% if acceso.requiere_ingreso %}<a class="btn btn-outline-dark btn-sm align-self-start" href="{% url 'cuentas:login' %}?next={{ votacion.get_resultados_url|urlencode }}">Ingresar para verlos</a>{% endif %}
+              {% endif %}
+            </div>
+          </div>
+          {% endwith %}
+        {% endfor %}
+      </div>
+    {% empty %}
+      {% if edicion %}<p>Esta edición todavía no tiene votaciones publicadas.</p>{% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

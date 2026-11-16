@@ -1,0 +1,22 @@
+{% load static %}<!doctype html>
+{# Falla de la protección CSRF: el formulario caducó o no vino del sitio. #}
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>El formulario caducó | Votaciones del Festival</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+  <main class="seccion">
+    <div class="container">
+      <p class="meta mb-1">Error 403</p>
+      <h1>El formulario caducó</h1>
+      <p class="lead mt-2">Por seguridad, el sitio solo acepta formularios enviados desde sus propias páginas y con la sesión vigente. No se guardó nada.</p>
+      <p>Vuelve a la página anterior, recárgala y envía el formulario otra vez.</p>
+      <a class="btn btn-primary mt-2" href="/">Ir al inicio</a>
+    </div>
+  </main>
+</body>
+</html>

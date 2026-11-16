@@ -109,11 +109,14 @@ class Categoria(Fechas):
         return self.regla_voto == self.ReglaVoto.UNO_POR_CATEGORIA
 
     def clean(self):
-        # Cambiar la regla con votos ya registrados dejaría votos que no la cumplen.
+        # Con votos registrados, cambiar la regla o la edición dejaría votos que ya no la cumplen.
         if self.pk:
-            anterior = Categoria.objects.filter(pk=self.pk).values_list("regla_voto", flat=True).first()
-            if anterior and anterior != self.regla_voto and self.votos.exists():
-                raise ValidationError({"regla_voto": "Esta categoría ya tiene votos: su regla de votos no se puede cambiar."})
+            anterior = Categoria.objects.filter(pk=self.pk).values("regla_voto", "edicion_id").first()
+            if anterior and self.votos.exists():
+                if anterior["regla_voto"] != self.regla_voto:
+                    raise ValidationError({"regla_voto": "Esta categoría ya tiene votos: su regla de votos no se puede cambiar."})
+                if anterior["edicion_id"] != self.edicion_id:
+                    raise ValidationError({"edicion": "Esta categoría ya tiene votos: no se puede pasar a otra edición."})
 
 
 # ---------------------------------------------------------------- Votación
@@ -144,9 +147,15 @@ class Votacion(Fechas):
         CERRADA = "cerrada", "Cerrada"
 
     class Publicacion(models.TextChoices):
+        """Cuándo se publican los resultados."""
         AL_CIERRE = "al_cierre", "Al cierre de la votación"
         EN_VIVO = "en_vivo", "En vivo"
         NO_PUBLICAR = "no_publicar", "No publicar"
+
+    class Audiencia(models.TextChoices):
+        """A quiénes se muestran los resultados publicados. La administración los ve siempre."""
+        PUBLICO = "publico", "Todo el público"
+        REGISTRADOS = "registrados", "Solo usuarios registrados"
 
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="votaciones", verbose_name="categoría")
     nombre = models.CharField("nombre", max_length=160)
@@ -155,10 +164,14 @@ class Votacion(Fechas):
     imagen = models.ImageField("imagen", upload_to="votaciones/", blank=True)
     fecha_apertura = models.DateTimeField("abre")
     fecha_cierre = models.DateTimeField("cierra")
-    # Reglas configurables por votación (pendientes de validación con la Fundación).
-    # El número de votos ya no es configurable: la Entrega 3 fija un voto por categoría (ver Voto).
+    # Reglas de publicación de resultados, configurables en cada votación: cuándo se publican
+    # y a quiénes se muestran (ver resultados.py). El número de votos lo fija la regla de la categoría.
     publicacion_resultados = models.CharField(
-        "publicación de resultados", max_length=20, choices=Publicacion.choices, default=Publicacion.AL_CIERRE)
+        "publicación de resultados", max_length=20, choices=Publicacion.choices, default=Publicacion.AL_CIERRE,
+        help_text="Cuándo ve el público los resultados: en vivo, al cierre de la votación o nunca.")
+    audiencia_resultados = models.CharField(
+        "quién ve los resultados", max_length=12, choices=Audiencia.choices, default=Audiencia.PUBLICO,
+        help_text="A quiénes se muestran los resultados publicados. La administración los ve siempre.")
     es_prueba = models.BooleanField(
         "votación de prueba", default=False,
         help_text="Sirve para ensayar antes de la votación real; sus votos no cuentan en los resultados (RF-13).")
@@ -181,6 +194,13 @@ class Votacion(Fechas):
     def __str__(self):
         return self.nombre
 
+    def clean(self):
+        # Con votos registrados, mover la votación a otra categoría dejaría votos en la categoría equivocada.
+        if self.pk:
+            anterior = Votacion.objects.filter(pk=self.pk).values_list("categoria_id", flat=True).first()
+            if anterior and anterior != self.categoria_id and self.votos.exists():
+                raise ValidationError({"categoria": "Esta votación ya tiene votos: no se puede pasar a otra categoría."})
+
     @property
     def edicion(self):
         return self.categoria.edicion
@@ -199,6 +219,9 @@ class Votacion(Fechas):
 
     def get_absolute_url(self):
         return reverse("votaciones:detalle", args=[self.pk])
+
+    def get_resultados_url(self):
+        return reverse("votaciones:resultados_votacion", args=[self.pk])
 
 
 # ---------------------------------------------------------------- Opción
@@ -222,6 +245,13 @@ class Opcion(Fechas):
 
     def __str__(self):
         return self.nombre
+
+    def clean(self):
+        # Con votos registrados, mover la opción a otra votación cambiaría votos ya emitidos.
+        if self.pk:
+            anterior = Opcion.objects.filter(pk=self.pk).values_list("votacion_id", flat=True).first()
+            if anterior and anterior != self.votacion_id and self.votos.exists():
+                raise ValidationError({"votacion": "Esta opción ya tiene votos: no se puede pasar a otra votación."})
 
 
 # ---------------------------------------------------------------- Voto

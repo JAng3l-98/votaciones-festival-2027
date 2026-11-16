@@ -5,3 +5,6 @@ class CuentasConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "cuentas"
     verbose_name = "Cuentas de usuario"
+
+    def ready(self):
+        from . import senales  # noqa: F401  (mensajes al ingresar y al salir)

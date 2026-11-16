@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block titulo %}Contraseña cambiada{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center"><div class="col-md-8 col-lg-6">
+      <h1>Contraseña cambiada</h1>
+      <div class="aviso-voto aviso-voto-hecho mt-3" role="status">Tu sesión sigue abierta. La próxima vez ingresa con la contraseña nueva.</div>
+      <a class="btn btn-primary mt-3" href="{% url 'votaciones:inicio' %}">Ir al inicio</a>
+    </div></div>
+  </div>
+</section>
+{% endblock %}
