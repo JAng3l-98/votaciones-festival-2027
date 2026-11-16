@@ -38,8 +38,8 @@
             <li>En la categoría «{{ votacion.categoria.nombre }}» puedes votar una vez en cada una de sus votaciones.</li>
           {% endif %}
           <li>Después de confirmar, el voto no se puede cambiar.</li>
-          <li>Publicación de resultados: {{ votacion.get_publicacion_resultados_display|lower }}.
-            <span class="etiqueta etiqueta-pendiente">Pendiente de validación</span></li>
+          <li>Resultados: {{ regla_resultados }}.
+            {% if acceso_resultados.permitido %}<a class="fw-bold" href="{{ votacion.get_resultados_url }}">{% if acceso_resultados.vista_previa %}Ver vista previa{% else %}Ver resultados{% endif %}</a>{% endif %}</li>
         </ul>
       </div>
 
@@ -68,7 +68,7 @@
         <a href="{% url 'votaciones:voto_registrado' voto_usuario.comprobante %}">Ver mi comprobante</a>
       </div>
     {% elif estado == "proxima" %}
-      <div class="aviso-voto mt-4">Esta votación todavía no está abierta. Podrás votar desde el {{ votacion.fecha_apertura|date:"j \d\e F, g:i a"|lower }}.</div>
+      <div class="aviso-voto mt-4">Esta votación todavía no está abierta. Podrás votar desde el {{ votacion.fecha_apertura|date:"j \d\e F, g:i a"|lower }}</div>
     {% elif estado == "cerrada" %}
       <div class="aviso-voto mt-4">Esta votación ya cerró y no recibe más votos.</div>
     {% elif not user.is_authenticated %}

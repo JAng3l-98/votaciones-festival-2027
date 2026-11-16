@@ -10,7 +10,11 @@
       <p class="lead mt-2">Usa el correo con el que te registraste.</p>
       {% if next and not user.is_authenticated %}
         {# Entrega 3: el usuario llegó aquí al intentar votar sin sesión (CP-04) #}
-        <div class="nota-pendiente mt-3" role="status"><strong>Para votar debes iniciar sesión.</strong> Al ingresar vuelves a la votación que estabas viendo.</div>
+        {% if "/resultados" in next %}
+          <div class="nota-pendiente mt-3" role="status"><strong>Estos resultados son solo para usuarios registrados.</strong> Al ingresar vuelves a la página que estabas viendo.</div>
+        {% else %}
+          <div class="nota-pendiente mt-3" role="status"><strong>Para votar debes iniciar sesión.</strong> Al ingresar vuelves a la votación que estabas viendo.</div>
+        {% endif %}
       {% endif %}
 
       <form method="post" class="mt-4" novalidate>
@@ -30,7 +34,8 @@
         <input type="hidden" name="next" value="{{ next }}">
         <button class="btn btn-primary w-100 mt-2" type="submit">Ingresar</button>
       </form>
-      <p class="mt-4">¿No tienes cuenta? <a class="fw-bold" href="{% url 'cuentas:registro' %}">Crear cuenta</a></p>
+      <p class="mt-3 mb-0"><a href="{% url 'cuentas:password_reset' %}">¿Olvidaste tu contraseña?</a></p>
+      <p class="mt-2">¿No tienes cuenta? <a class="fw-bold" href="{% url 'cuentas:registro' %}">Crear cuenta</a></p>
     </div></div>
   </div>
 </section>

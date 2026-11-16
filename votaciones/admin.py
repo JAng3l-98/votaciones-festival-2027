@@ -1,7 +1,29 @@
-from django.contrib import admin
-from django.db.models import Count
+"""
+Administración del sistema en Django Admin.
 
+Permisos (entrega final):
+  · Votantes: usuarios sin acceso a la administración (is_staff = False).
+  · Grupo «Administración del Festival»: gestiona ediciones, categorías, votaciones y opciones,
+    y solo consulta los votos. Lo crea `migrate` (ver permisos.py).
+  · Superusuario: además gestiona usuarios y grupos.
+Nadie puede crear, modificar ni borrar votos desde aquí: se registran solo desde el sitio,
+con todas sus validaciones. Tampoco se pueden hacer cambios que dejarían votos ya
+registrados en el lugar equivocado (mover una opción, una votación o una categoría).
+"""
+from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
+from django.db.models import Count
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.timezone import localtime
+
+from .ediciones import duplicar_edicion
 from .models import Categoria, Edicion, Opcion, Votacion, Voto
+
+
+def solo_lectura_si_tiene_votos(obj, campos):
+    """Campos que se vuelven de solo lectura cuando el objeto ya tiene votos."""
+    return campos if obj is not None and obj.pk and obj.votos.exists() else ()
 
 
 @admin.register(Edicion)
@@ -13,10 +35,46 @@ class EdicionAdmin(admin.ModelAdmin):
         "activa",
         "fecha_inicio",
         "fecha_fin",
+        "total_categorias",
     )
     list_filter = ("activa", "anio")
     search_fields = ("nombre", "anio", "descripcion")
     ordering = ("-anio",)
+    actions = ["duplicar_para_el_anio_siguiente", "marcar_como_activa"]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(categorias_registradas=Count("categorias"))
+
+    @admin.display(description="categorías", ordering="categorias_registradas")
+    def total_categorias(self, edicion):
+        return edicion.categorias_registradas
+
+    @admin.action(description="Duplicar para el año siguiente (categorías, votaciones y opciones)",
+                  permissions=["add"])
+    def duplicar_para_el_anio_siguiente(self, request, queryset):
+        for edicion in queryset:
+            try:
+                nueva, totales = duplicar_edicion(edicion)
+            except ValidationError as error:
+                self.message_user(request, " ".join(error.messages), messages.ERROR)
+                continue
+            self.message_user(
+                request,
+                f"Se creó «{nueva}» con {totales['categorias']} categorías, {totales['votaciones']} votaciones "
+                f"y {totales['opciones']} opciones, con las fechas corridas un año. Quedó inactiva: "
+                "revisa sus participantes y fechas, y actívala cuando esté lista.",
+                messages.SUCCESS,
+            )
+
+    @admin.action(description="Marcar como la edición activa (la que ve el público)", permissions=["change"])
+    def marcar_como_activa(self, request, queryset):
+        if queryset.count() != 1:
+            self.message_user(request, "Selecciona una sola edición para activarla.", messages.WARNING)
+            return
+        edicion = queryset.get()
+        edicion.activa = True
+        edicion.save()   # save() desactiva las demás
+        self.message_user(request, f"«{edicion}» es ahora la edición activa del sitio.", messages.SUCCESS)
 
 
 @admin.register(Categoria)
@@ -27,6 +85,11 @@ class CategoriaAdmin(admin.ModelAdmin):
     ordering = ("edicion", "orden", "nombre")
     list_editable = ("orden", "visible")
     prepopulated_fields = {"slug": ("nombre",)}
+
+    def get_readonly_fields(self, request, obj=None):
+        # Con votos, la categoría no puede pasar a otra edición. Su regla tampoco cambia: si se
+        # intenta, el modelo lo rechaza con un mensaje (Categoria.clean).
+        return super().get_readonly_fields(request, obj) + solo_lectura_si_tiene_votos(obj, ("edicion",))
 
 
 class OpcionInline(admin.TabularInline):
@@ -41,12 +104,13 @@ class VotacionAdmin(admin.ModelAdmin):
         "nombre",
         "categoria",
         "estado",
-        "fecha_apertura",
-        "fecha_cierre",
+        "cierra",
+        "total_votos",
+        "ver_resultados",
         "visible",
         "es_prueba",
     )
-    list_filter = ("visible", "es_prueba", "publicacion_resultados")
+    list_filter = ("visible", "es_prueba", "publicacion_resultados", "audiencia_resultados", "categoria__edicion")
     search_fields = ("nombre", "slug", "descripcion")
     ordering = ("categoria", "orden", "fecha_apertura")
     inlines = [OpcionInline]
@@ -62,14 +126,38 @@ class VotacionAdmin(admin.ModelAdmin):
         ("Fechas", {
             "fields": ("fecha_apertura", "fecha_cierre")
         }),
-        ("Reglas configurables (pendientes de validación con la Fundación)", {
-            "fields": ("publicacion_resultados", "es_prueba"),
+        ("Resultados", {
+            "fields": ("publicacion_resultados", "audiencia_resultados"),
+            "description": "Cuándo se publican los resultados y a quiénes se muestran. "
+                           "La administración los puede consultar siempre.",
+        }),
+        ("Votación de prueba", {
+            "fields": ("es_prueba",),
         }),
     )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(votos_recibidos=Count("votos"))
+
+    def get_readonly_fields(self, request, obj=None):
+        # Con votos, la votación no puede pasar a otra categoría.
+        return super().get_readonly_fields(request, obj) + solo_lectura_si_tiene_votos(obj, ("categoria",))
 
     @admin.display(description="estado")
     def estado(self, votacion):
         return votacion.get_estado_display()
+
+    @admin.display(description="cierra", ordering="fecha_cierre")
+    def cierra(self, votacion):
+        return localtime(votacion.fecha_cierre).strftime("%d/%m/%Y %H:%M")
+
+    @admin.display(description="votos", ordering="votos_recibidos")
+    def total_votos(self, votacion):
+        return votacion.votos_recibidos
+
+    @admin.display(description="resultados")
+    def ver_resultados(self, votacion):
+        return format_html('<a href="{}">Ver</a>', reverse("votaciones:resultados_votacion", args=[votacion.pk]))
 
 
 @admin.register(Opcion)
@@ -84,6 +172,10 @@ class OpcionAdmin(admin.ModelAdmin):
             votos_recibidos=Count("votos")
         )
 
+    def get_readonly_fields(self, request, obj=None):
+        # Con votos, la opción no puede pasar a otra votación.
+        return super().get_readonly_fields(request, obj) + solo_lectura_si_tiene_votos(obj, ("votacion",))
+
     @admin.display(description="votos", ordering="votos_recibidos")
     def total_votos(self, opcion):
         return opcion.votos_recibidos
@@ -92,15 +184,13 @@ class OpcionAdmin(admin.ModelAdmin):
 @admin.register(Voto)
 class VotoAdmin(admin.ModelAdmin):
     """
-    Consulta administrativa de los votos. Es solo de lectura: los votos se crean
-    únicamente desde el sitio, con todas sus validaciones, y no se pueden editar
-    desde aquí.
+    Consulta administrativa de los votos. Es solo de lectura para todos, también para el
+    superusuario: los votos se crean únicamente desde el sitio, con todas sus validaciones,
+    y no se pueden editar ni borrar desde aquí. El historial de la administración queda en
+    el registro de Django (LogEntry).
     """
 
-    list_display = (
-        "fecha", "usuario", "correo", "categoria",
-        "votacion", "opcion", "comprobante"
-    )
+    list_display = ("fecha", "correo", "votacion", "opcion", "comprobante")
     list_filter = ("edicion", "categoria", "votacion")
     search_fields = (
         "usuario__email",
@@ -114,6 +204,7 @@ class VotoAdmin(admin.ModelAdmin):
     )
     ordering = ("-fecha",)
     list_per_page = 50
+    actions = None   # sin acciones masivas, como «Eliminar seleccionados»
     fields = (
         "comprobante", "fecha", "usuario", "edicion",
         "categoria", "votacion", "opcion"
@@ -131,7 +222,7 @@ class VotoAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
-        return request.user.is_superuser
+        return False
 
 
 admin.site.site_header = "Administración · Votaciones del Festival"

@@ -29,7 +29,7 @@ def registro(request):
 def mis_votos(request):
     """Participación del usuario: los votos que ha emitido en la edición activa y las categorías donde aún no vota."""
     edicion = Edicion.objects.activa()
-    votos, pendientes, total_categorias = [], [], 0
+    votos, pendientes, votadas, total_categorias = [], [], set(), 0
     if edicion:
         # Solo se consultan los votos del usuario que inició sesión (request.user): nadie ve los de otro.
         votos = list(request.user.votos.filter(edicion=edicion)

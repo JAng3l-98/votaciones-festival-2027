@@ -1,0 +1,11 @@
+{% autoescape off %}Hola{% if user.first_name %}, {{ user.first_name }}{% endif %}:
+
+Recibimos una solicitud para restablecer la contraseña de tu cuenta en el sistema de votaciones del Festival ({{ user.email }}).
+
+Para crear una contraseña nueva, abre este enlace:
+{{ protocol }}://{{ domain }}{% url 'cuentas:password_reset_confirm' uidb64=uid token=token %}
+
+El enlace vence en una hora y sirve una sola vez. Si no pediste el cambio, ignora este correo: tu contraseña sigue igual.
+
+Sistema de votaciones · Festival de la Leyenda Vallenata
+{% endautoescape %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block titulo %}Página no encontrada{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <p class="meta mb-1">Error 404</p>
+    <h1>No encontramos esta página</h1>
+    <p class="lead mt-2">Puede que la dirección esté mal escrita o que la votación ya no esté publicada.</p>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <a class="btn btn-primary" href="{% url 'votaciones:lista' %}">Ver las votaciones</a>
+      <a class="btn btn-outline-dark" href="{% url 'votaciones:inicio' %}">Ir al inicio</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

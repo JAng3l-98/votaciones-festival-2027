@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block titulo %}Resultados · {{ votacion.nombre }}{% endblock %}
+
+{% block contenido %}
+{% with estado=votacion.estado %}
+<section class="seccion">
+  <div class="container">
+    <nav aria-label="Ruta" class="mb-2">
+      <a href="{% url 'votaciones:resultados' %}">Resultados</a>
+      <span class="texto-suave">/ {{ votacion.categoria.nombre }}</span>
+    </nav>
+
+    <h1>{{ votacion.nombre }}</h1>
+    <div class="d-flex flex-wrap gap-2 align-items-center my-3">
+      <span class="etiqueta etiqueta-{% if estado == 'proxima' %}pronto{% else %}{{ estado }}{% endif %}">{{ votacion.get_estado_display }}</span>
+      {% if votacion.es_prueba %}<span class="etiqueta etiqueta-pendiente">Votación de prueba</span>{% endif %}
+      <span class="texto-suave">
+        {% if estado == "proxima" %}Abre el {{ votacion.fecha_apertura|date:"j \d\e F \d\e Y, g:i a"|lower }}
+        {% elif estado == "abierta" %}Cierra el {{ votacion.fecha_cierre|date:"j \d\e F \d\e Y, g:i a"|lower }}
+        {% else %}Cerró el {{ votacion.fecha_cierre|date:"j \d\e F \d\e Y, g:i a"|lower }}{% endif %}
+      </span>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        {% if acceso.permitido %}
+          {% if acceso.vista_previa %}
+            <div class="nota-pendiente mb-3" role="status"><strong>Vista previa de la administración.</strong> {{ acceso.motivo }} El público todavía no ve estos resultados.</div>
+          {% endif %}
+
+          <div class="panel">
+            <h2 class="h3 mb-1">{% if estado == "cerrada" %}Resultado final{% else %}Resultados parciales{% endif %}</h2>
+            <p class="texto-suave">
+              {{ conteo.total }} voto{{ conteo.total|pluralize }} registrado{{ conteo.total|pluralize }} en MySQL ·
+              consultado el {{ consultado|date:"j \d\e F, g:i:s a"|lower }}
+            </p>
+
+            {% if conteo.total %}
+              {% if conteo.empate %}
+                <p class="fw-bold">{% if estado == "cerrada" %}Terminó en empate{% else %}Van empatados{% endif %}:
+                  {% for fila in conteo.lideres %}{{ fila.nombre }}{% if not forloop.last %} y {% endif %}{% endfor %}.</p>
+              {% else %}
+                <p class="fw-bold">{% if estado == "cerrada" %}Ganó{% else %}Va ganando{% endif %} {{ conteo.lideres.0.nombre }}.</p>
+              {% endif %}
+            {% else %}
+              <p>Esta votación todavía no tiene votos.</p>
+            {% endif %}
+
+            {% for fila in conteo.filas %}
+              <div class="resultado{% if fila.lider %} lider{% endif %}">
+                <div class="cabeza">
+                  <span>{{ fila.nombre }}</span>
+                  <span>{{ fila.porcentaje|floatformat:1 }} % <span class="texto-suave fw-normal">({{ fila.votos }} voto{{ fila.votos|pluralize }})</span></span>
+                </div>
+                <div class="pista" role="img" aria-label="{{ fila.nombre }}: {{ fila.porcentaje|floatformat:1 }} por ciento, {{ fila.votos }} votos">
+                  <div class="barra" style="width: {{ fila.porcentaje|stringformat:'.1f' }}%"></div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="aviso-voto" role="status">
+            <strong>Resultados aún no disponibles.</strong> {{ acceso.motivo }}
+          </div>
+          {% if acceso.requiere_ingreso %}
+            <a class="btn btn-primary mt-3" href="{% url 'cuentas:login' %}?next={{ request.path|urlencode }}">Ingresar para ver los resultados</a>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="col-lg-4">
+        <div class="panel">
+          <h2 class="h3">Publicación</h2>
+          <p class="mb-2">En esta votación los resultados {{ regla_resultados }}.</p>
+          <p class="texto-suave small mb-0">La Fundación define en la administración cuándo se publican (en vivo, al cierre o nunca) y a quiénes se muestran.</p>
+          {% if user.is_staff %}
+            <hr>
+            <p class="small mb-2">Herramientas de la administración</p>
+            <div class="d-flex flex-column gap-2">
+              <a class="btn btn-outline-dark btn-sm" href="{% url 'votaciones:resultados_csv' votacion.pk %}">Descargar CSV</a>
+              <a class="btn btn-outline-dark btn-sm" href="{% url 'admin:votaciones_votacion_change' votacion.pk %}">Editar la votación</a>
+            </div>
+          {% endif %}
+        </div>
+        <div class="d-flex flex-column gap-2 mt-3">
+          {% if votacion.visible and votacion.categoria.visible %}<a class="btn btn-primary" href="{{ votacion.get_absolute_url }}">Ir a la votación</a>{% endif %}
+          <a class="btn btn-outline-dark" href="{% url 'votaciones:resultados' %}">Todos los resultados</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endwith %}
+{% endblock %}

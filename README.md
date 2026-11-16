@@ -16,7 +16,8 @@ Cada entrega queda guardada con una etiqueta (*tag*) de Git, para revisar el có
 | --- | --- |
 | Entrega 1 – Prototipo UX/UI y documentación | [entrega-1](https://github.com/JAng3l-98/votaciones-festival-2027/tree/entrega-1) |
 | Entrega 2 – Desarrollo inicial del sistema de votaciones | [entrega-2](https://github.com/JAng3l-98/votaciones-festival-2027/tree/entrega-2) |
-| Entrega 3 – Módulo de votaciones, validaciones y API GET | `main` (la etiqueta `entrega-3` se crea al entregar) |
+| Entrega 3 – Módulo de votaciones, validaciones y API GET | [entrega-3](https://github.com/JAng3l-98/votaciones-festival-2027/tree/entrega-3) |
+| Entrega final – Sustentación del sistema | `main` |
 
 ## Equipo
 
@@ -27,7 +28,17 @@ Cada entrega queda guardada con una etiqueta (*tag*) de Git, para revisar el có
 | Liana Victoria Gaitán Higuera | Interfaz pública: categorías, votaciones y detalle | Pantallas del proceso de votación: elegir, confirmar y comprobante |
 | John Edisson Gómez Cortés | Django Admin, datos de prueba y pruebas | Consulta administrativa de votos y verificación contra MySQL |
 
-## Qué hace esta versión (Entrega 3)
+## Qué agrega la entrega final
+
+- **Resultados con datos reales** (`/resultados/`): votos por opción, porcentaje y quién va ganando (o el empate), contados en MySQL al abrir la página. Cada votación define en la administración **cuándo** se publican (en vivo, al cierre o nunca) y **a quiénes** se muestran (todo el público o solo usuarios registrados). La administración los ve siempre como **vista previa** y puede descargarlos en CSV. Las votaciones de prueba nunca publican resultados.
+- **Permisos diferenciados:** votantes (sin acceso a la administración), grupo **«Administración del Festival»** (configura ediciones, categorías, votaciones y opciones; los votos solo los consulta) y superusuario (además gestiona usuarios y grupos). `migrate` crea el grupo con sus permisos.
+- **Los votos no se modifican ni se borran desde la administración**, ni siquiera el superusuario. Tampoco se puede mover a otro lugar lo que ya tiene votos (una opción a otra votación, una votación a otra categoría, una categoría a otra edición), y la base de datos impide borrar opciones, votaciones o categorías con votos (`on_delete=PROTECT`).
+- **Nueva edición sin tocar el código:** acción «Duplicar para el año siguiente» en Ediciones (copia categorías, votaciones y opciones con las fechas corridas un año, sin votos, y la deja inactiva) y acción «Marcar como la edición activa».
+- **Recuperar y cambiar la contraseña:** enlace «¿Olvidaste tu contraseña?» en el ingreso; el enlace llega por correo, vence en una hora y sirve una sola vez. Con sesión iniciada, «Cambiar contraseña» en el pie de página.
+- **Listo para publicarse:** configuración de HTTPS con una variable de entorno, páginas de error propias (404, 403, 500 y formulario caducado) y `check --deploy` sin advertencias.
+- **Votos de prueba:** `cargar_votos_prueba` registra votos de votantes ficticios para que los resultados tengan datos.
+
+## Lo que ya venía de la Entrega 3
 
 - **Módulo de votaciones:** el usuario inicia sesión, elige una categoría y una opción, confirma y el voto se guarda en MySQL con un comprobante.
 - **Regla central:** cada usuario elige **una sola opción por categoría y edición**. Puede votar en otras categorías, pero no dos veces en la misma, aunque tenga varias votaciones (subeventos). Es la regla por defecto de cada categoría.
@@ -44,12 +55,16 @@ Versiones anteriores: la Entrega 2 creó el proyecto, los modelos Edición → C
 ```
 votaciones-festival-2027/
 ├── config/                 Configuración del proyecto (settings.py, urls.py)
-├── cuentas/                App de usuarios: modelo Usuario, inicio/cierre de sesión, registro
+├── cuentas/                App de usuarios: modelo Usuario, ingreso, registro y contraseñas
 ├── votaciones/             App principal: modelos, admin, vistas, rutas y pruebas
 │   ├── models.py           Edicion, Categoria, Votacion, Opcion y Voto (restricción única)
 │   ├── servicios.py        Reglas y validaciones del voto (Entrega 3)
+│   ├── resultados.py       Cuándo y a quiénes se muestran los resultados, y su conteo (entrega final)
+│   ├── permisos.py         Grupo «Administración del Festival» (entrega final)
+│   ├── ediciones.py        Duplicar una edición para el año siguiente (entrega final)
 │   ├── api.py              API GET /api/categorias/ (Entrega 3)
 │   ├── admin.py            Administración en Django Admin
+│   ├── management/commands cargar_datos_prueba, cargar_votos_prueba y probar_concurrencia
 │   ├── views.py            Vistas públicas y proceso de votación (la «V» de MVT)
 │   ├── urls.py             Rutas públicas y de la API
 │   └── test_*.py           Pruebas automáticas
@@ -130,19 +145,51 @@ El archivo `.env` **no se sube a GitHub**: cada integrante tiene el suyo.
 ### Ejecutar
 
 ```bash
-python manage.py migrate          # crea las tablas en MySQL (en la Entrega 3 agrega la tabla de votos)
-python manage.py createsuperuser  # usuario para entrar a /admin
+python manage.py migrate               # crea las tablas en MySQL y el grupo «Administración del Festival»
+python manage.py createsuperuser       # usuario para entrar a /admin
 python manage.py cargar_datos_prueba   # edición 2027 con categorías, votaciones y opciones de prueba
+python manage.py cargar_votos_prueba   # votos de 40 votantes ficticios, para ver resultados
 python manage.py runserver
 ```
 
 - Sitio público: http://127.0.0.1:8000/
+- Resultados: http://127.0.0.1:8000/resultados/
 - Administración: http://127.0.0.1:8000/admin/
 - API GET: http://127.0.0.1:8000/api/categorias/
 
 Para votar, crea una cuenta en «Crear cuenta» (o usa la del administrador), entra a una votación abierta, elige una opción y confírmala.
 
-> Si ya tenías el proyecto de la Entrega 2: `git pull`, `python manage.py migrate` y `python manage.py cargar_datos_prueba`. La migración `0002` crea la tabla de votos y retira el campo «votos por usuario» de cada votación; la `0003` agrega la regla de votos configurable en cada categoría.
+> Si ya tenías el proyecto: `git pull`, `python manage.py migrate` y `python manage.py cargar_datos_prueba`. La migración `0002` crea la tabla de votos; la `0003` agrega la regla de votos configurable en cada categoría; la `0004` agrega «quién ve los resultados» en cada votación.
+
+### Roles y permisos
+
+| Rol | Cómo se crea | Qué puede hacer |
+| --- | --- | --- |
+| Votante | «Crear cuenta» en el sitio | Votar, ver sus votos y los resultados publicados. No entra a la administración. |
+| Administración del Festival | En `/admin/` → Usuarios: marcar «Es staff» y agregarlo al grupo «Administración del Festival» | Configurar ediciones, categorías, votaciones y opciones; consultar votos y ver resultados antes de publicarse. No modifica ni borra votos. |
+| Superusuario | `python manage.py createsuperuser` | Todo lo anterior, más usuarios y grupos. Tampoco modifica ni borra votos. |
+
+### Resultados
+
+En la administración, cada votación tiene la sección **Resultados**:
+
+- **Publicación de resultados** (cuándo): *En vivo* (mientras está abierta), *Al cierre de la votación* o *No publicar*.
+- **Quién ve los resultados** (a quiénes): *Todo el público* o *Solo usuarios registrados*.
+
+Los resultados se cuentan en MySQL cada vez que se abre la página. La administración los ve siempre (como «vista previa» mientras no estén publicados) y los descarga en CSV desde la página de resultados.
+
+### Recuperar la contraseña
+
+En el ingreso, «¿Olvidaste tu contraseña?» pide el correo y envía un enlace. En el equipo local **el correo se muestra en la terminal donde corre `runserver`**: copia el enlace de ahí y ábrelo en el navegador. Para enviar correos reales se configuran las variables `EMAIL_*` del `.env` (ver `.env.example`).
+
+### Votos de prueba
+
+```bash
+python manage.py cargar_votos_prueba                          # 40 votantes ficticios
+python manage.py cargar_votos_prueba --votantes 80 --semilla 7
+```
+
+Crea votantes `votante01@ejemplo.com`, `votante02@ejemplo.com`… sin contraseña utilizable (nadie puede ingresar con ellos) y les registra votos en las votaciones que ya abrieron, respetando la regla de cada categoría. Se puede ejecutar varias veces: quien ya votó en una categoría no vuelve a votar. No toca los votos de los usuarios reales.
 
 ### Probar la concurrencia (CP-09)
 
@@ -160,7 +207,19 @@ El voto que queda registrado es real: usa un usuario de prueba.
 ```bash
 python manage.py test                              # todas
 python manage.py test votaciones.test_votos -v 2   # casos CP-01 a CP-10 del módulo de votos
+python manage.py test votaciones.test_resultados   # resultados: cuándo, a quiénes y conteo
 ```
+
+## Publicar el sitio para usuarios externos
+
+El proyecto se entrega para ejecutarse en un equipo local. Para publicarlo en internet hacen falta, además del código:
+
+1. **Un servidor con MySQL 8** y un dominio propio, con **certificado HTTPS** (por ejemplo, de Let's Encrypt).
+2. **Variables de entorno de producción** en el `.env` del servidor: `DJANGO_DEBUG=False`, una `DJANGO_SECRET_KEY` nueva, `DJANGO_ALLOWED_HOSTS` y `DJANGO_CSRF_TRUSTED_ORIGINS` con el dominio, y `DJANGO_HTTPS=1` (redirige a HTTPS, cookies seguras y HSTS). Con eso, `python manage.py check --deploy` no muestra advertencias.
+3. **Un servidor de aplicaciones** (Gunicorn) detrás de **Nginx**, que además sirve los archivos estáticos reunidos con `python manage.py collectstatic` y las imágenes de `media/`.
+4. **Un servidor de correo (SMTP)** en las variables `EMAIL_*`, para que lleguen los enlaces de recuperar la contraseña.
+5. **Copias de seguridad** periódicas de la base de datos (`mysqldump`) y un usuario de MySQL con permisos solo sobre esta base.
+6. **Antes de abrir al público:** cambiar los datos de prueba por los reales, revisar con la Fundación la política de tratamiento de datos (Ley 1581 de 2012), el texto de autorización y los límites de intentos de ingreso, y hacer una prueba de carga con el número de votantes esperado.
 
 ## Modelo de datos
 
@@ -168,12 +227,12 @@ python manage.py test votaciones.test_votos -v 2   # casos CP-01 a CP-10 del mó
 | --- | --- | --- |
 | `Edicion` | Una edición anual del Festival (por ejemplo, 2027, edición 60). Solo una está activa. | Tiene muchas categorías |
 | `Categoria` | Un grupo de votaciones (Música, Piloneras…), con su regla de votos | Pertenece a una edición |
-| `Votacion` | Una votación del público, con fechas de apertura y cierre y reglas configurables | Pertenece a una categoría |
+| `Votacion` | Una votación del público, con fechas de apertura y cierre, y cuándo y a quiénes se publican sus resultados | Pertenece a una categoría |
 | `Opcion` | Lo que el público puede elegir (canción, artista, comparsa…) | Pertenece a una votación |
 | `Usuario` | Persona registrada; ingresa con su correo | Tiene muchos votos |
 | `Voto` | La opción que eligió un usuario, con fecha y comprobante | Pertenece a un usuario, una edición, una categoría, una votación y una opción. **Único por usuario, categoría y edición** (o por votación, si la categoría lo permite) |
 
-Las reglas que la Fundación aún no define (publicación de resultados, votación de prueba) son campos de cada votación, para que se configuren sin cambiar el código. La regla de votos es un campo de cada categoría: por defecto, un solo voto en toda la categoría, como pide la Entrega 3.
+Las reglas que decide la Fundación son campos que se configuran en la administración sin cambiar el código: en cada votación, cuándo y a quiénes se publican los resultados y si es una votación de prueba; en cada categoría, la regla de votos (por defecto, un solo voto en toda la categoría).
 
 ## API GET
 
@@ -207,6 +266,14 @@ Las reglas que la Fundación aún no define (publicación de resultados, votaci�
 | Formularios POST con CSRF y sesión obligatoria | `votaciones/views.py` (`confirmar`, `votar`) |
 | API GET | `votaciones/api.py` y ruta en `votaciones/urls.py` |
 | Pruebas CP-01 a CP-10 | `votaciones/test_votos.py` |
+| Cuándo y a quiénes se muestran los resultados, y su conteo | `votaciones/resultados.py`; vistas `resultados_lista`, `resultados` y `resultados_csv` en `votaciones/views.py` |
+| Nadie modifica ni borra votos desde la administración | `votaciones/admin.py`, clase `VotoAdmin` |
+| Lo que tiene votos no cambia de lugar | `votaciones/models.py`, métodos `clean()` de `Categoria`, `Votacion` y `Opcion`; campos de solo lectura en `votaciones/admin.py` |
+| Grupo «Administración del Festival» | `votaciones/permisos.py` (se crea con `migrate`) |
+| Duplicar una edición | `votaciones/ediciones.py` y acción en `EdicionAdmin` |
+| Recuperar y cambiar la contraseña | `cuentas/urls.py` y plantillas `templates/cuentas/contrasena_*.html` |
+| Configuración de producción (HTTPS, correo) | `config/settings.py` |
+| Pruebas de la entrega final | `votaciones/test_resultados.py`, `votaciones/test_administracion_final.py`, `cuentas/test_contrasena.py` |
 
 ## Convenciones
 

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cambiar contraseña{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center"><div class="col-md-8 col-lg-5">
+      <h1>Cambiar contraseña</h1>
+      <p class="lead mt-2">Escribe tu contraseña actual y luego la nueva dos veces.</p>
+      <form method="post" class="mt-4" novalidate>
+        {% csrf_token %}
+        {% include "cuentas/_campos.html" %}
+        <button class="btn btn-primary w-100 mt-2" type="submit">Cambiar contraseña</button>
+      </form>
+      <p class="mt-4"><a href="{% url 'cuentas:password_reset' %}">¿No recuerdas la actual?</a></p>
+    </div></div>
+  </div>
+</section>
+{% endblock %}

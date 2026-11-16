@@ -1,12 +1,14 @@
 """
-Formularios de la app cuentas: registro de usuarios e inicio de sesión.
+Formularios de la app cuentas: registro, inicio de sesión y contraseñas.
 
 Se basan en los formularios que ya trae Django, que validan la contraseña
 (longitud, que no sea común ni solo números) y la guardan cifrada.
 """
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm, UserCreationForm,
+)
 from django.utils import timezone
 
 Usuario = get_user_model()
@@ -64,4 +66,32 @@ class IngresoForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs["placeholder"] = "nombre@correo.com"
+        aplicar_estilos(self)
+
+
+class RecuperarContrasenaForm(PasswordResetForm):
+    """Pide el correo de la cuenta para enviarle el enlace de restablecimiento."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].label = "Correo electrónico"
+        self.fields["email"].widget.attrs["placeholder"] = "nombre@correo.com"
+        aplicar_estilos(self)
+
+
+class NuevaContrasenaForm(SetPasswordForm):
+    """Contraseña nueva desde el enlace del correo, con las mismas reglas del registro."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["new_password1"].help_text = "Mínimo 8 caracteres. No uses solo números ni una contraseña común."
+        aplicar_estilos(self)
+
+
+class CambiarContrasenaForm(PasswordChangeForm):
+    """Cambio de contraseña con sesión iniciada: pide la actual y la nueva dos veces."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["new_password1"].help_text = "Mínimo 8 caracteres. No uses solo números ni una contraseña común."
         aplicar_estilos(self)

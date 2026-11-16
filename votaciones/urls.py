@@ -13,6 +13,10 @@ urlpatterns = [
     path("votaciones/<int:pk>/confirmar/", views.confirmar, name="confirmar"),
     path("votaciones/<int:pk>/votar/", views.votar, name="votar"),
     path("votos/<str:comprobante>/", views.voto_registrado, name="voto_registrado"),
+    # Entrega final: resultados, con las reglas de cuándo y a quiénes se publican
+    path("resultados/", views.resultados_lista, name="resultados"),
+    path("votaciones/<int:pk>/resultados/", views.resultados, name="resultados_votacion"),
+    path("votaciones/<int:pk>/resultados.csv", views.resultados_csv, name="resultados_csv"),
     # Entrega 3: API GET con las categorías y opciones en JSON
     path("api/categorias/", api.categorias, name="api_categorias"),
 ]

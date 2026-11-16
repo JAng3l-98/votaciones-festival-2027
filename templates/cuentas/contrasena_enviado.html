@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block titulo %}Revisa tu correo{% endblock %}
+
+{% block contenido %}
+<section class="seccion">
+  <div class="container">
+    <div class="row justify-content-center"><div class="col-md-8 col-lg-6">
+      <h1>Revisa tu correo</h1>
+      <div class="aviso-voto aviso-voto-hecho mt-3" role="status">
+        Si el correo corresponde a una cuenta registrada, te enviamos un enlace para crear una contraseña nueva.
+        El enlace vence en una hora y sirve una sola vez.
+      </div>
+      <p class="mt-3 texto-suave">Por seguridad, el sitio no confirma si un correo está registrado. Si no te llega, revisa la carpeta de correo no deseado o vuelve a intentarlo.</p>
+      <a class="btn btn-primary mt-2" href="{% url 'cuentas:login' %}">Volver a ingresar</a>
+    </div></div>
+  </div>
+</section>
+{% endblock %}

@@ -525,6 +525,7 @@ a.ficha-votacion:hover .ficha-imagen { filter: brightness(1.08); }
 /* Resultados en barras */
 .resultado { margin-bottom: 1rem; }
 .resultado .cabeza { display: flex; justify-content: space-between; gap: 1rem; font-weight: 600; margin-bottom: .3rem; }
+.resultado .cabeza > span:last-child { white-space: nowrap; }
 .resultado .pista { height: 14px; background: var(--gris-fondo); border-radius: 999px; overflow: hidden; }
 .resultado .barra { height: 100%; background: var(--granate); border-radius: 999px; }
 .resultado.lider .barra { background: var(--rojo); }
@@ -538,19 +539,24 @@ a.ficha-votacion:hover .ficha-imagen { filter: brightness(1.08); }
   .barra-accion { position: static; border-top: 0; padding: 0; }
   .cuenta-cajas { gap: 3rem; }
   .pie-principal { flex-direction: row; justify-content: space-between; align-items: flex-start; }
-  .pie-enlaces { max-width: 32rem; justify-content: flex-end; }
+  .pie-enlaces { max-width: 40rem; justify-content: flex-end; }
   .pie-ficha { flex-direction: row; justify-content: space-between; gap: 1rem; }
 }
 
 /* ---------- Computador ---------- */
 @media (min-width: 992px) {
-  .encabezado .nav-link { padding: 1rem .2rem; margin: 0 .7rem; }
   .trilogia { grid-template-columns: 1.3fr 1fr; grid-template-rows: auto auto; padding: 1.6rem; gap: 1.2rem; }
   .trilogia-item:first-child { grid-row: span 2; }
   .trilogia-item:first-child .ilustracion { width: 120px; height: 120px; }
   .trilogia-item .ilustracion { width: 88px; height: 88px; }
   .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
   .admin-menu { flex-direction: column; overflow: visible; border-bottom: 0; border-right: 1px solid var(--linea); padding: 1.2rem .8rem; }
+}
+
+/* ---------- Menú horizontal (desde 1200 px; con «Resultados» el menú completo no cabe antes) ---------- */
+@media (min-width: 1200px) {
+  .encabezado .nav-link { padding: 1rem .2rem; margin: 0 .45rem; white-space: nowrap; }
+  .marca-texto strong { white-space: nowrap; }
 }
 
 @media (prefers-reduced-motion: reduce) {
